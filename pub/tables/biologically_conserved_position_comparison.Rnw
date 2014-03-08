@@ -1,0 +1,44 @@
+\documentclass{article}
+\usepackage{booktabs}
+
+\begin{document}
+<<echo=FALSE,message=FALSE>>=
+# requirements for tables
+source("file_locations.R")
+require(stringr)
+require(plyr)
+require(reshape2)
+require(xtable)
+@
+
+<<vcf_table_df, echo=FALSE, error=FALSE,warning=FALSE>>=
+read_vcf_table <- function(tsv){
+  vcf_table <- read.table(str_c(bioinf_data_loc,tsv,sep = ""), header = TRUE)
+  vcf_table$dataset <- str_replace(string = tsv, pattern = "-Table.tsv", replace = "")
+  return(vcf_table) 
+}
+
+vcf_tables <- list.files(bioinf_data_loc)
+vcf_tables <- vcf_tables[grep(pattern = "*TMAP-refine-gatk-Table.tsv",x = vcf_tables)]
+ambigs <- c(6,118,975,979,983,992:996,1011,1395,175,188,419,1492, 1503,1507,1508)
+vcf_tables_df <- ldply(vcf_tables, failwith(NULL, read_vcf_table))
+vcf_tables_df <- vcf_tables_df[!(vcf_tables_df$POS %in% ambigs),]
+vcf_tables_df <- arrange(vcf_tables_df,dataset, POS)
+vcf_tables_df <- cbind(vcf_tables_df, colsplit(vcf_tables_df$dataset,"-",names=c("Org","Plat","Lab", "Rep","Map","mod","Var")))
+@
+
+% how to add in summary statistics from non-variant call positions
+<<vcf_tables_summary, echo=FALSE, error=FALSE,warning=FALSE>>=
+vcf_summary_df <- vcf_tables_df[,c(20:23,2,3,8,13)]
+@
+
+
+<< vcf_sumary_table, results='asis',echo=FALSE>>=
+strCaption <- "\\textbf{Biologically Conserved Position Variant Comparisons} Characteristics of variant calls for biologically conserved positions for different datasets."
+print(xtable(vcf_summary_df, 
+             digits = 2,
+             caption=strCaption, label="Biologically Conserved Position Comparison"), 
+      include.rownames = FALSE,
+      caption.placement="top")
+@
+\end{document}

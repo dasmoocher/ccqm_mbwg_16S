@@ -1,0 +1,45 @@
+\documentclass{article}
+\usepackage{booktabs}
+\usepackage{longtable}
+
+\begin{document}
+<<echo=FALSE,message=FALSE>>=
+# requirements for tables
+source("file_locations.R")
+require(stringr)
+require(plyr)
+require(reshape2)
+require(xtable)
+@
+
+<<ratio_table_df, echo=FALSE, error=FALSE,warning=FALSE>>=
+base_ratio_df <- read.csv(str_c(stat_data_loc, "biovar_table.csv"))
+base_ratio_df <- arrange(base_ratio_df,POS, dataset)
+base_ratio_df <- cbind(base_ratio_df, colsplit(base_ratio_df$dataset,"-",names=c("Org","Plat","Lab", "Rep")))
+@
+
+% how to add in summary statistics from non-variant call positions
+<<base_ratio_tables_summary, echo=FALSE, error=FALSE,warning=FALSE>>=
+base_ratio_summary_df <- base_ratio_df[,c(25:28,2,19:21,24,18)]
+@
+
+<< ec_sumary_table, results='asis',echo=FALSE>>=
+strCaption <- "\\textbf{Base ratios estimates for E. coli biologically variable positions}"
+print(xtable(base_ratio_summary_df[base_ratio_summary_df$Org == "Ecoli", -1], 
+             digits = 2,
+             caption=strCaption, label="EC Base ratio estimates"), 
+      include.rownames = FALSE,
+      tabular.environment='longtable', 
+      floating = FALSE,
+      caption.placement="top")
+@
+
+<< lm_sumary_table, results='asis',echo=FALSE>>=
+strCaption <- "\\textbf{Base ratios estimates for L. monocytogenes biologically variable positions}"
+print(xtable(base_ratio_summary_df[base_ratio_summary_df$Org == "Lmono", -1], 
+             digits = 2,
+             caption=strCaption, label="LM Base ratio estimates"), 
+      include.rownames = FALSE,
+      caption.placement="top")
+@
+\end{document}
