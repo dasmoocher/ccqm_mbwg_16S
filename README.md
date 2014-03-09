@@ -27,11 +27,14 @@ Unix based operating system is required for a number of the pipeline dependencie
   * plyr 
 * Bash 
   
-## Procedure for reproducing sequence analysis  
-1. [Data gathering](#dg)
-2. [conservative bases](#cb)
-3. [biologically variable positions](#bv)
-4. [indiviudual gene copy sequences](#vs)
+## Procedure for reproducing sequence analysis
+1. [Bioinformatics sequence processing](#bsp)  
+    1. [Sequence gathering](#bdg)
+	2. [conservative bases](#bcb)
+	3. [biologically variable positions](#bbv)
+	4. [indiviudual gene copy sequences](#bvs)
+2. [Statistical data analysis](#sda)
+	1. 
 
 ### General Notes
 Directory structure  
@@ -66,9 +69,11 @@ Users need to obtain third party software from link listed above and move the re
 9. SortSam.jar
 10. tmap
 
+### [Bioinformatitics sequence processing](id:bsp)
+The complete sequence analysis pipeline can be completed by running the *pipe.sh* script from the command line: `bash scripts\pipe.sh` from within the *ccqm_mbwg_16S/bioinf* directroy. 
 
 
-### [Data Gathering](id:dg)
+#### [Data Gathering](id:bdg)
 * Sanger seqeuncing data - archived in the _GenBank Trace Archive_
 	- Go to [http://www.ncbi.nlm.nih.gov/Traces/trace.cgi?view=search](http://www.ncbi.nlm.nih.gov/Traces/trace.cgi?view=search)  
 	- Input search query string: `CENTER_NAME = "NIST" or CENTER_NAME = "LGC" or CENTER_NAME = "ISP" or CENTER_NAME = "ATCC"` (should return 495 total sequences)  
@@ -80,11 +85,14 @@ Users need to obtain third party software from link listed above and move the re
 	* *sra_to_fastq.sh* - script will download and dump datasets as fastq for next generation sequencing datasets generated in the study.
 	* Additional steps included to split the NMIA data by barcodes using *mothur*.  The dataset is "dumped" as an sff file which is split by barcode converted into fasta and qual.  The *fastaqual_to_fastq.py* script is used to convert the files into fastq files for *E. coli* and *L. monocytogenes*.
 	
-### [Conservative Bases](id:cb)
+#### [Conservative Bases](id:bcb)
 * pipeline comparison - *ccqm_pipeline_comparison.sh*
 	* requirements: in *resources directory*: *metadata.txt*, *Ecoli_16S_consensus.fasta*, and *Lmono_16S_consensus*; software requirements noted in script header. 	
 
-### [Biologically Variable Positions](id:bv)
+#### [Biologically Variable Positions](id:bbv)
+* Base counts and initial statisitics for biologically variable positions caculated using *GenomeAnalysisTK.jar* for the mapping files generated using *tmap* with realignment around indels and removal of duplicate reads.
 
-### [Indiviudual Gene Copy Sequences](id:vs)
+#### [Indiviudual Gene Copy Sequences](id:bvs)
+* The *SAM_parser.py* script was used to generate the contatenated biologically variable positions for individual sequencing reads from the mapping files generated using *tmap* with realignment around indels and removal of duplicate read.
 
+### [Statistical Data Analysis](id:sda)
