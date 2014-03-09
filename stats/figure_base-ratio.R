@@ -31,71 +31,42 @@ if(any(vcf_ambigs$prop==0)){
 #### Investigation of potential systematic bias  
 # Plots of observed abundant base ratios with 95 % confidence intervals calculated using binominal sampling theory.  
 # Dashed lines indicate the expected abundant base proportions assumming 6 and 7 gene copies for _L. monocytogenes_ and _E. coli_ respecively.  p-values for logistic regression indicate statistical difference from the LGC "454" rep 1 dataset.  
+# 
+ vcf_ambigs$Location <- factor(vcf_ambigs$POS) #, levels = c(118,175,188,419,975,983,992:996,1011,1395))
+ vcf_ambigs$dataset <- str_replace_all(vcf_ambigs$dataset, pattern="-",replacement="\n")
+ vcf_ambigs$org <- "ecoli"
+ vcf_ambigs$org[grepl("Lmono", vcf_ambigs$dataset)] <- "lmono"
+vcf_ambigs$dataset <- str_replace(vcf_ambigs$dataset, pattern="Ecoli\n",replacement="")
+vcf_ambigs$dataset <- str_replace(vcf_ambigs$dataset, pattern="Lmono\n",replacement="")
 
-vcf_ambigs$Location <- as.character(vcf_ambigs$POS)
-vcf_ambigs$dataset <- str_replace_all(vcf_ambigs$dataset, pattern="-",replacement="\n")
-##### _E. coli_ 6:1
-ggplot(vcf_ambigs[vcf_ambigs$exp_ratio == "6:1",]) + 
-  geom_point(aes(x = Location, y = prop)) + 
-  geom_errorbar(aes(x = Location, ymin = lci, ymax = uci)) + 
-  facet_wrap(~dataset, nrow = 1) +
-  geom_hline(aes(yintercept = 1/7), linetype = 2) +
-  geom_hline(aes(yintercept = 2/7), linetype = 2) +
-  geom_hline(aes(yintercept = 3/7), linetype = 2) +
-  geom_hline(aes(yintercept = 4/7), linetype = 2) +
-  geom_hline(aes(yintercept = 5/7), linetype = 2) +
-  geom_hline(aes(yintercept = 6/7), linetype = 2) +
-  geom_hline(aes(yintercept = 1), linetype = 2) +
+ggplot(vcf_ambigs[vcf_ambigs$org == "lmono",]) + 
+  geom_point(aes(x = dataset, y = prop, color = dataset)) + 
+  geom_errorbar(aes(x = dataset, ymin = lci, ymax = uci, color = dataset)) + 
+  facet_wrap(~Location, ncol = 1) +
+  geom_hline(aes(yintercept = 1/6), linetype = 2, alpha = 0.5) +
+  geom_hline(aes(yintercept = 2/6), linetype = 2, alpha = 0.5) +
+  geom_hline(aes(yintercept = 3/6), linetype = 2, alpha = 0.5) +
+  geom_hline(aes(yintercept = 4/6), linetype = 2, alpha = 0.5) +
+  geom_hline(aes(yintercept = 5/6), linetype = 2, alpha = 0.5) +
+  geom_hline(aes(yintercept = 1), linetype = 2, alpha = 0.5) +
   theme_bw() + 
-  theme(axis.text.x = element_text(angle = 270)) +
-  labs(y = "Abundant Base Proportion")
-ggsave(str_c(figure_loc,"base_ratio_61.pdf", sep = ""))
+  theme(legend.position = "none") +
+  labs(y = "Abundant Base Proportion", x = "Dataset", color = "Dataset")
+ggsave(str_c(figure_loc,"base_ratio_lmono.pdf", sep = ""), height = 8, width=4)
 
-##### _E. coli_ 4:3
-ggplot(vcf_ambigs[vcf_ambigs$exp_ratio == "4:3",]) + 
-  geom_point(aes(x = Location, y = prop)) + 
-  geom_errorbar(aes(x = Location, ymin = lci, ymax = uci)) + 
-  facet_grid(~dataset) +
-  geom_hline(aes(yintercept = 1/7), linetype = 2) +
-  geom_hline(aes(yintercept = 2/7), linetype = 2) +
-  geom_hline(aes(yintercept = 3/7), linetype = 2) +
-  geom_hline(aes(yintercept = 4/7), linetype = 2) +
-  geom_hline(aes(yintercept = 5/7), linetype = 2) +
-  geom_hline(aes(yintercept = 6/7), linetype = 2) +
-  geom_hline(aes(yintercept = 1), linetype = 2) +
+ggplot(vcf_ambigs[vcf_ambigs$org == "ecoli",]) + 
+  geom_point(aes(x = dataset, y = prop, color = dataset)) + 
+  geom_errorbar(aes(x = dataset, ymin = lci, ymax = uci, color = dataset)) + 
+  facet_wrap(~Location) +
+  geom_hline(aes(yintercept = 1/7), linetype = 2, alpha = 0.5) +
+  geom_hline(aes(yintercept = 2/7), linetype = 2, alpha = 0.5) +
+  geom_hline(aes(yintercept = 3/7), linetype = 2, alpha = 0.5) +
+  geom_hline(aes(yintercept = 4/7), linetype = 2, alpha = 0.5) +
+  geom_hline(aes(yintercept = 5/7), linetype = 2, alpha = 0.5) +
+  geom_hline(aes(yintercept = 6/7), linetype = 2, alpha = 0.5) +
+  geom_hline(aes(yintercept = 1), linetype = 2, alpha = 0.5) +
   theme_bw() + 
-  theme(axis.text.x = element_text(angle = 270)) +
-  labs(y = "Abundant Base Proportion")
-ggsave(str_c(figure_loc,"base_ratio_43.pdf", sep = ""))
-
-##### _L. monocyotogenes_ 5:1
-ggplot(vcf_ambigs[vcf_ambigs$exp_ratio == "5:1",]) + 
-  geom_point(aes(x = Location, y = prop)) + 
-  geom_errorbar(aes(x = Location, ymin = lci, ymax = uci)) + 
-  facet_grid(~dataset) +
-  geom_hline(aes(yintercept = 1/6), linetype = 2) +
-  geom_hline(aes(yintercept = 2/6), linetype = 2) +
-  geom_hline(aes(yintercept = 3/6), linetype = 2) +
-  geom_hline(aes(yintercept = 4/6), linetype = 2) +
-  geom_hline(aes(yintercept = 5/6), linetype = 2) +
-  geom_hline(aes(yintercept = 1), linetype = 2) +
-  theme_bw() + 
-  theme(axis.text.x = element_text(angle = 270)) +
-  labs(y = "Abundant Base Proportion")
-ggsave(str_c(figure_loc,"base_ratio_51.pdf", sep = ""))
-
-##### _L. monocyotogenes_ 3:3
-ggplot(vcf_ambigs[vcf_ambigs$exp_ratio == "3:3",]) + 
-  geom_point(aes(x = Location, y = prop)) + 
-  geom_errorbar(aes(x = Location, ymin = lci, ymax = uci)) + 
-  facet_grid(~dataset) +
-  geom_hline(aes(yintercept = 1/6), linetype = 2) +
-  geom_hline(aes(yintercept = 2/6), linetype = 2) +
-  geom_hline(aes(yintercept = 3/6), linetype = 2) +
-  geom_hline(aes(yintercept = 4/6), linetype = 2) +
-  geom_hline(aes(yintercept = 5/6), linetype = 2) +
-  geom_hline(aes(yintercept = 1), linetype = 2) +
-  theme_bw() + 
-  theme(axis.text.x = element_text(angle = 270)) +
-  labs(y = "Abundant Base Proportion")
-ggsave(str_c(figure_loc,"base_ratio_33.pdf", sep = ""))
+  theme(legend.position = "bottom", legend.direction = "horizontal",
+        axis.text.x = element_blank()) +
+  labs(y = "Abundant Base Proportion", x = "Dataset", color = "Dataset")
+ggsave(str_c(figure_loc,"base_ratio_ecoli.pdf", sep = ""), height = 8, width=7)

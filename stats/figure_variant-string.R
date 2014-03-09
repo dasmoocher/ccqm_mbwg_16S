@@ -13,9 +13,6 @@ library(stringr)
 
 #loading data
 biovar <- read.csv(str_c(stat_data_loc, "string_tables_filtered.csv", sep = ""))
-#colnames(biovar) <- c("variants","LGC 454 Rep 1", "LGC 454 Rep 2", "LGC 454 Rep 3", "NMIA 454", "LGC Sanger", "NIST Sanger")
-#biovarm <- melt(biovar)
-#biovarm <- rename(biovarm, replace= c("variable" = "dataset"))
 biovar <-ddply(biovar, "dataset", transform,
                prop = counts / sum(counts), 
                n = sum(counts))
@@ -26,11 +23,13 @@ biovar$org <- "E. coli"
 biovar$org[grep("Lmono*",biovar$dataset)] <- "L. monocytogenes"
 
 # #cleaning up the data
-# biovarm$dataset <- factor(biovarm$dataset, 
-#                          levels = c("LGC Sanger", "NIST Sanger","LGC 454 Rep 1", 
-#                                     "LGC 454 Rep 2", "LGC 454 Rep 3", "NMIA 454"))
 biovar$variant_string <- factor(biovar$variant_string, levels = c("GCG","GTG","TCG", "GTA", "GCA", "TCA", "TTA", "TTG",       
                                                         "ACCGATTGTA","ACCGATTGTG","GGTAGAATCG","GGTAGAATCA"))
+biovar$dataset <- str_replace(biovar$dataset, "Ecoli-","")
+biovar$dataset <- str_replace(biovar$dataset, "Lmono-","")
+biovar$dataset <- str_replace(biovar$dataset, "-","\n")
+
+
 
 expected <- data.frame(variant_string = levels(biovar$variant_string), 
                        prop = c(c(2,2,1,1,0,0,0,0)/6,c(3,3,1,0)/7), 
@@ -45,7 +44,8 @@ biovar_plot <- function(org){
     geom_hline(data = expected[expected$org == org,], aes(yintercept = prop), linetype = 2) +
     theme_bw() +
     theme(strip.text = element_text(face = "italic"), 
-          legend.position = "bottom", legend.direction = "horizontal") +
+          legend.position = "bottom", legend.direction = "horizontal",
+          axis.text.x = element_blank()) +
     labs(x = "Variant String", y = "Observed Proportion", fill = "Dataset") + 
     facet_grid(org~variant_string, scale = "free_x")
   return(bvp)

@@ -1,7 +1,7 @@
 # CCQM MBWG Microbial Identity 2013  
 Description: International interlaboratory study sequencing 16s rRNA from two genomic reference materials.  Manuscript is in prep.  
 
-Scripts and pipeline presented have been run on **Mac session info** and **Linux session info**
+Scripts and pipeline presented have been run on Mac OSX 10.8 and 10.9 and Ubuntu 12.04.
 
 ### Requirements  
 Unix based operating system is required for a number of the pipeline dependencies.  
