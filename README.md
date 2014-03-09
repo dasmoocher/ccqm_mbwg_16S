@@ -1,9 +1,3 @@
-## To Do:
-Write script generate links to binaries
-change ccqm-16S-bioinformatics/data to results
-need to rethink document structure with stat/ pub/ and bioinformatics directories
-pick up documentation at - fastq_stats.sh
-
 # CCQM MBWG Microbial Identity 2013  
 Description: International interlaboratory study sequencing 16s rRNA from two genomic reference materials.  Manuscript is in prep.  
 
@@ -42,16 +36,16 @@ Unix based operating system is required for a number of the pipeline dependencie
 ### General Notes
 Directory structure  
   
-    ccqm_16S/    
-        ccqm_16S_stats/ 
+    ccqm_mbwg_16S/    
+        stats/ 
            data/                   -- data files generated as part of statistical analysis
            
-        ccqm_16S_pub/  
+        pub/  
            tables/                 -- Rnw scripts for publication tables
            supplemental/           -- documents included as supplemental material for publication
            figures/                -- pdf of publication figures
            
-        ccqm_16S_bioinformatics/
+        bioinf/
             bin/                   -- executables for third party software
             fastq-data/            -- raw sequence data
             resources/             -- additional input files required to run pipelines
