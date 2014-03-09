@@ -1,0 +1,32 @@
+.Rproj.user
+.Rhistory
+.RData
+.DS_Store
+*.tex
+*.sty
+
+# files generated from running pipe.sh
+*vcf
+*vcf.idx
+*pileup
+*bam
+*bai
+*fastq
+*fasta
+*qscore
+*log*
+*fasta.*
+*dict
+*tar.gz
+*sam
+*metric.txt
+
+#thrid party binaries and executables
+*jar
+*bwa
+*bcftools
+*mothur
+*pl
+*tmap
+*samtools
+*sratool*

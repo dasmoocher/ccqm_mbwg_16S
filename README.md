@@ -32,7 +32,7 @@ Unix based operating system is required for a number of the pipeline dependencie
     1. [Sequence gathering](#bdg)
 	2. [conservative bases](#bcb)
 	3. [biologically variable positions](#bbv)
-	4. [indiviudual gene copy sequences](#bvs)
+	4. [individual gene copy sequences](#bvs)
 2. [Statistical data analysis](#sda)
 	1. 
 

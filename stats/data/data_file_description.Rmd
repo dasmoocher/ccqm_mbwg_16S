@@ -1,0 +1,114 @@
+Description of variables in data files used in statistical analysis
+========================================================
+```{r, echo=FALSE, results='hide'}
+library(xtable)
+```
+
+### merged_base_ratios.csv
+```{r, echo=FALSE, results='hide'}
+merged_base_ratios <- read.csv("merged_base_ratios.csv")
+Variable <- names(merged_base_ratios)
+Description <- c("Reference Base", #Ref
+                 "Reference Position", #POS
+                 "Approximate read depth (reads with MQ=255 or with bad mates are filtered)", #DP
+                 "Quality values assigned by variant caller", #QUAL
+                 "RMS Mapping Quality", #MQ
+                 "Allele Frequency, for each ALT allele, in the same order as listed", #AF
+                 "Number of observed alleles", #AN
+                 "Fraction of Reads Containing Spanning Deletions", #Dels
+                 "Phred-scaled p-value using Fisher's exact test to detect strand bias", #FS
+                 "Consistency of the site with at most two segregating haplotypes", #HaplotypeScore
+                 "Sequencing dataset", #dataset
+                 "Number of As at the position", #A
+                 "Number of Cs at the position", #C
+                 "Number of Gs at the position", #G
+                 "Number of Ts at the position" #T
+                 )
+mbr_description <- cbind(Variable, Description)
+mbr_descript_table <- xtable(mbr_description)
+mbr_descript_print <- print.xtable(mbr_descript_table, type = "html")
+```
+
+```{r results='asis', echo=FALSE}
+mbr_descript_print
+```
+
+
+### biovar_table.csv
+```{r, echo=FALSE, results='hide'}
+biovar_tab <- read.csv("biovar_table.csv")
+Variable <- names(biovar_tab)
+Description <- c("Reference Base", #Ref
+                 "Reference Position", #POS
+                 "Approximate read depth (reads with MQ=255 or with bad mates are filtered)", #DP
+                 "Quality values assigned by variant caller", #QUAL
+                 "RMS Mapping Quality", #MQ
+                 "Allele Frequency, for each ALT allele, in the same order as listed", #AF
+                 "Number of observed alleles", #AN
+                 "Fraction of Reads Containing Spanning Deletions", #Dels
+                 "Phred-scaled p-value using Fisher's exact test to detect strand bias", #FS
+                 "Consistency of the site with at most two segregating haplotypes", #HaplotypeScore
+                 "Sequencing dataset", #dataset
+                 "Number of As at the position", #A
+                 "Number of Cs at the position", #C
+                 "Number of Gs at the position", #G
+                 "Number of Ts at the position", #T
+                 "Major base proportion (Y/N)", #prop
+                 "Major base gene copy number with the maximum probablility", #max_copy
+                 "Probability of max_copy", #max_prob
+                 "Number of major and minor bases", #N
+                 "Number of major bases", #Y
+                 "Consensus base ratio", #exp_ratio
+                 "Number of 16S rRNA gene copies in the genome", #total_copy
+                 "Minor base gene copy number, for max_copy", #min_copy
+                 "Base copy ratio with the highest probability for the dataset" #base_ratio
+                 )
+bt_description <- cbind(Variable, Description)
+bt_descript_table <- xtable(bt_description)
+bt_descript_print <- print.xtable(bt_descript_table, type = "html")
+```
+
+```{r results='asis', echo=FALSE}
+bt_descript_print
+```
+
+### string_stats[_ecoli | lmono].csv
+```{r, echo=FALSE, results='hide'}
+string_stats <- read.csv("string_stats_ecoli.csv")
+Variable <- names(string_stats)
+Description <- c("Estimated variant combination for gene copy 1",
+                 "Estimated variant combination for gene copy 2",
+                 "Estimated variant combination for gene copy 3",
+                 "Estimated variant combination for gene copy 4",
+                 "Estimated variant combination for gene copy 5",
+                 "Estimated variant combination for gene copy 6",
+                 "Estimated variant combination for gene copy 7, L. monocytogenes only has 6 gene copies",
+                 "Likelihood for set of variant combination",
+                 "Probability of a chimera event",
+                 "Dataset used to estimate the set of variant combinations")
+string_stats_description <- cbind(Variable, Description)
+string_stats_descript_table <- xtable(string_stats_description)
+string_stats_descript_print <- print.xtable(string_stats_descript_table, type = "html")
+```
+
+```{r results='asis', echo=FALSE}
+string_stats_descript_print
+```
+
+
+### string_tables[_filtered].csv
+```{r, echo=FALSE, results='hide'}
+string_tables <- read.csv("string_tables.csv")
+Variable <- names(string_tables)
+Description <- c("Combinations of bases at biologically variable positions",
+                 "Number of reads with the combinations of variants",
+                 "source sequence dataset")
+string_tables_description <- cbind(Variable, Description)
+string_tables_descript_table <- xtable(string_tables_description)
+string_tables_descript_print <- print.xtable(string_tables_descript_table, type = "html")
+```
+
+```{r results='asis', echo=FALSE}
+string_tables_descript_print
+```
+
