@@ -4,6 +4,7 @@
 .DS_Store
 *.tex
 *.sty
+*~
 
 # files generated from running pipe.sh
 *vcf
@@ -21,7 +22,6 @@
 *sam
 *metric.txt
 *Table.tsv
-*
 
 #thrid party binaries and executables
 *jar
