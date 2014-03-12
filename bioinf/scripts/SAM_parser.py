@@ -14,18 +14,18 @@
 __doc__ = """
 SYNOPSIS
 
-    pileup_parse.py input.pileup output.tsv
+    SAM_parser.py input.sam reference.fasta output.csv
 
 DESCRIPTION
 
-    Converts pileup file to a tab separated
+    Converts sam file to a comma separated
     file with individual bases as rows in the document.
 
 USAGE
-    Input file must be labeled .pileup for script to function
+    Input file must be labeled .sam for script to function
 
     Large datsets must be filtered as output files have as many
-    rows as bases in the pileup file
+    rows as bases in the sam file
     
     output filter - ***need to incorporate this function***
         -ft Filter type - use to state whether to retain or exclude
@@ -47,7 +47,7 @@ AUTHOR
 """
 
 __author__ = "Nate Olson"
-__version__ = '0.1'
+__version__ = '0.2'
 
 #importing required modules
 import sys
@@ -58,13 +58,13 @@ def main():
     if len(sys.argv) > 1:
         if sys.argv[1] == "help" or sys.argv[1] == "-h":
             print help()
-        elif len(sys.argv) < 2:
+        elif len(sys.argv) < 3:
             print("Input and Output files not specified" % help())
         else:
-		sam_file = sys.argv[1]
-		ref_file = sys.argv[2]
-		output_file = sys.argv[3]
-		sam_expand(sam_file, ref_file, output_file)
+            sam_file = sys.argv[1]
+            ref_file = sys.argv[2]
+            output_file = sys.argv[3]
+            sam_expand(sam_file, ref_file, output_file)
         
     else:
         print("No arguments were provided see documentation below:\n\n %s"  %help())
@@ -91,10 +91,10 @@ def sam_expand(sam_file, ref_file, output_file):
 
 	# iterating through each line of the sam file
 	for line in sam:
-	    if not line.startswith("@"): # skip elements that start with @
+            if not line.startswith("@"): # skip elements that start with @
 		lineSplit = line.split('\t')
-		# skip elements with a flag score (second element in the array) of 4 (reads not mapped)
-		if lineSplit[2] != 4 and int(lineSplit[4]) > 10:
+                # skip elements with a flag score (second element in the array) of 4 (reads not mapped)
+                if lineSplit[2] != 4 and int(lineSplit[4]) > 10:
 		    # expand cigar (element 5 of sub arrays)
 		    # array of letters in the cigar
 		    letters = re.findall('[A-Z]',lineSplit[5])
@@ -106,10 +106,11 @@ def sam_expand(sam_file, ref_file, output_file):
 
 		    # writing to output file individual line for each base
 		    # split cigar, sequence, and qual into arrays
-		    cigar = list(expCigar) # cigar
-		    sequence = list(lineSplit[9]) # sequence
-		    qual = list(lineSplit[10]) # qual
-			    
+		    cigar = list(expCigar)
+		    sequence = list(lineSplit[9])
+		    qual = list(lineSplit[10])
+		    if qual == ['*']: # for when input sam file does not have quality scores
+			qual = ["?"] * len(sequence)
 		    #reference sequence
 		    ref_seq = ref[lineSplit[2]]
 		    # interate through each position of each of the reads creating a line for each
