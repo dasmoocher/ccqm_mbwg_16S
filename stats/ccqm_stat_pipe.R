@@ -1,3 +1,4 @@
+source("gather_fastq-stats.R")
 source("gather_base-ratio.R")
 source("analysis_base-ratio.R")
 source("figure_base-ratio.R")

@@ -9,11 +9,13 @@ library(plyr)
 
 read_table <- function(filename){
   stat_table <- read.table(filename, 
-                          sep="\t", header = FALSE, na.strings = NA)
+                          sep="\t", header = FALSE, na.strings = NA, stringsAsFactors = F)
   ds <- filename
   ds <-str_replace(ds, pattern="-fastq-stats.txt", replace="")
   stat_table$dataset <- ds
-  return(stat_table)
+  print(filename)
+  print(stat_table)
+  return(stat_table[stat_table$V1 %in% c("stats_info","stats_len"),])
 }
 
 setwd(bioinf_data_loc)
