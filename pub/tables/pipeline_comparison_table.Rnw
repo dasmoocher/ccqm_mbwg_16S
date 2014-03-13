@@ -5,12 +5,12 @@
 % ideas for modifications, arrange by position, work out filtering
 <<echo=FALSE,message=FALSE>>=
 # requirements for tables
-source("file_locations.R")
+source("../../stats/file_locations.R")
 require(stringr)
 require(plyr)
 require(reshape2)
 require(xtable)
-require(limma)
+#require(limma)
 @
 
 <<vcf_table_df, echo=FALSE, error=FALSE,warning=FALSE>>=
@@ -47,18 +47,18 @@ print(xtable(vcf_summary,
 
 
 <<vcf_venn_counts, echo=FALSE, error=FALSE,warning=FALSE, message=FALSE>>=
-vcf_venn_lab <- vennCounts(dcast(vcf_tables_df, Org*POS~Lab)[,c(-1,-2)])
-vcf_venn_plat <- vennCounts(dcast(vcf_tables_df, Org*POS~Plat)[,c(-1,-2)])
-vcf_venn_Map <- vennCounts(dcast(vcf_tables_df, Org*POS~Map)[,c(-1,-2)])
-vcf_venn_Var <- vennCounts(dcast(vcf_tables_df, Org*POS~Var)[,c(-1,-2)])
+# vcf_venn_lab <- vennCounts(dcast(vcf_tables_df, Org*POS~Lab)[,c(-1,-2)])
+# vcf_venn_plat <- vennCounts(dcast(vcf_tables_df, Org*POS~Plat)[,c(-1,-2)])
+# vcf_venn_Map <- vennCounts(dcast(vcf_tables_df, Org*POS~Map)[,c(-1,-2)])
+# vcf_venn_Var <- vennCounts(dcast(vcf_tables_df, Org*POS~Var)[,c(-1,-2)])
 @
 
 <<vcf_venn_diagrams,fig.show='asis',echo=FALSE>>=
-par(mfrow=c(2,2))
-vennDiagram(vcf_venn_lab)
-vennDiagram(vcf_venn_plat)
-vennDiagram(vcf_venn_Map)
-vennDiagram(vcf_venn_Var)
+# par(mfrow=c(2,2))
+# vennDiagram(vcf_venn_lab)
+# vennDiagram(vcf_venn_plat)
+# vennDiagram(vcf_venn_Map)
+# vennDiagram(vcf_venn_Var)
 @
 
 <<vcf_tables_split, echo=FALSE, error=FALSE,warning=FALSE>>=

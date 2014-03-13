@@ -5,7 +5,7 @@
 \begin{document}
 <<echo=FALSE,message=FALSE>>=
 # requirements for tables
-source("file_locations.R")
+source("../../stats/file_locations.R")
 require(stringr)
 require(plyr)
 require(reshape2)
