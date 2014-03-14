@@ -31,7 +31,7 @@ index_reference() {
 
 index_reference $Ecoli_ref
 index_reference $Lmono_ref
-for i in *TMAP-refine.bam;
+for i in *{NIST,LGC,NMIA}*TMAP-refine.bam *{ATCC,ISP}*bwa-refine.bam;
 do
 	if [[ $i == Ecoli* ]]; then
 		f=$Ecoli_ref

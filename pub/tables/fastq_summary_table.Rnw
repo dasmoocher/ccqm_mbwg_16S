@@ -1,0 +1,41 @@
+\documentclass{article}
+\usepackage{booktabs}
+
+
+\begin{document}
+\SweaveOpts{concordance=TRUE}
+<<echo=FALSE,message=FALSE>>=
+# requirements for tables
+source("../../stats/file_locations.R")
+require(stringr)
+require(plyr)
+require(reshape2)
+require(xtable)
+@
+
+<<fastq_stats_df, echo=FALSE, error=FALSE,warning=FALSE>>=
+fastq_stats_df <- read.csv(str_c(stat_data_loc, "merged_fastq_stats.csv"))
+fastq_stats_df <- cbind(fastq_stats_df, colsplit(fastq_stats_df$dataset,"-",names=c("Org","Plat","Lab", "Rep")))
+@
+
+% how to add in summary statistics from non-variant call positions
+<<fastq_summary_table, echo=FALSE, error=FALSE,warning=FALSE>>=
+fastq_summary_table <-  fastq_stats_df[fastq_stats_df$variable %in% c("reads","mean","max","min"),] 
+fastq_summary_table$metric = NULL
+fastq_summary_table <- dcast(fastq_summary_table, Org*Plat*Lab*Rep~variable)
+fastq_summary_table$Length <- str_c(fastq_summary_table$mean, " ", "(",fastq_summary_table$max, "-", fastq_summary_table$min, ")",sep = "")
+fastq_summary_table <- subset(fastq_summary_table,select = -c(max,mean, min))
+colnames(fastq_summary_table) <- c("Organism", "Platform","Lab", "Replicate","Count","Length")
+@
+% 
+<< fastq_table, results=tex ,echo=FALSE>>=
+strCaption <- "\\textbf{Sequence dataset summary}"
+print(xtable(fastq_summary_table, 
+             digits = 0,
+             caption=strCaption, label="summary stats"), 
+      include.rownames = FALSE,
+      floating = FALSE,
+      caption.placement="top")
+@
+
+\end{document}

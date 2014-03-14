@@ -11,6 +11,7 @@ read_table <- function(filename){
                           sep="\t", header = TRUE, na.strings = NA)
   ds <- filename
   ds <-str_replace(ds, pattern="-TMAP-refine-Full-Table.tsv", replace="")
+  ds <-str_replace(ds, pattern="-bwa-refine-Full-Table.tsv", replace="")
   vcf_table$dataset <- ds
   return(vcf_table)
 }
