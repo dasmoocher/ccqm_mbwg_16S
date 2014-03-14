@@ -2,6 +2,7 @@
 \usepackage{booktabs}
 
 \begin{document}
+\SweaveOpts{concordance=TRUE}
 <<echo=FALSE,message=FALSE>>=
 # requirements for tables
 source("../../stats/file_locations.R")
@@ -33,7 +34,7 @@ vcf_summary_df <- vcf_tables_df[,c(20:23,2,3,8,13)]
 @
 
 
-<< vcf_sumary_table, results='asis',echo=FALSE>>=
+<< vcf_sumary_table, results=tex,echo=FALSE>>=
 strCaption <- "\\textbf{Biologically Conserved Position Variant Comparisons} Characteristics of variant calls for biologically conserved positions for different datasets."
 print(xtable(vcf_summary_df, 
              digits = 2,

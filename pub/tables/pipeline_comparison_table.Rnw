@@ -2,6 +2,7 @@
 \usepackage{booktabs}
 
 \begin{document}
+\SweaveOpts{concordance=TRUE}
 % ideas for modifications, arrange by position, work out filtering
 <<echo=FALSE,message=FALSE>>=
 # requirements for tables
@@ -37,7 +38,7 @@ vcf_tables_df <- cbind(vcf_tables_df, colsplit(vcf_tables_df$dataset,"-",names=c
 vcf_summary <-dcast(vcf_tables_df, Org+Plat+Lab+ Rep~Map*Var, length)
 @
 
-<<summary_table, results='asis',echo=FALSE>>=
+<<summary_table, results=tex,echo=FALSE>>=
 strCaption <- "\\textbf{Variant call counts for pipeline pomparison}"
 print(xtable(vcf_summary, 
              caption=strCaption, label="Pipeline Comparison Summary"), 
@@ -78,7 +79,7 @@ vcf_tables_lm_6 <- vcf_tables_lm[vcf_tables_lm$POS %in% 1251:1500,]
 
 
 
-<< ec_vcf_table, results='asis',echo=FALSE>>=
+<< ec_vcf_table, results=tex,echo=FALSE>>=
 strCaption <- "\\textbf{E. coli Pipeline Comparison} Characteristics of variant calls for different bioinformatic pipelines."
 print(xtable(vcf_tables_ec, 
              digits=2, 
@@ -88,7 +89,7 @@ print(xtable(vcf_tables_ec,
       caption.placement="top")
 @
 
-<< lm_vcf_table_1, results='asis',echo=FALSE>>=
+<< lm_vcf_table_1, results=tex,echo=FALSE>>=
 strCaption <- "\\textbf{L. monocytogenes Positions 1-500 Pipeline Comparison 1} Characteristics of variant calls for different bioinformatic pipelines."
 print(xtable(vcf_tables_lm_1, 
              digits=2, 
@@ -97,7 +98,7 @@ print(xtable(vcf_tables_lm_1,
       caption.placement="top",)
 @
 
-<< lm_vcf_table_2, results='asis',echo=FALSE>>=
+<< lm_vcf_table_2, results=tex,echo=FALSE>>=
 strCaption <- "\\textbf{L. monocytogenes Positions 501-600 Pipeline Comparison 1} Characteristics of variant calls for different bioinformatic pipelines."
 print(xtable(vcf_tables_lm_2, 
              digits=2, 
@@ -106,7 +107,7 @@ print(xtable(vcf_tables_lm_2,
       caption.placement="top")
 @
 
-<< lm_vcf_table_3, results='asis',echo=FALSE>>=
+<< lm_vcf_table_3, results=tex,echo=FALSE>>=
 strCaption <- "\\textbf{L. monocytogenes Positions 601-750 Pipeline Comparison 1} Characteristics of variant calls for different bioinformatic pipelines."
 print(xtable(vcf_tables_lm_3, 
              digits=2, 
@@ -115,7 +116,7 @@ print(xtable(vcf_tables_lm_3,
       caption.placement="top")
 @
 
-<< lm_vcf_table_4, results='asis',echo=FALSE>>=
+<< lm_vcf_table_4, results=tex,echo=FALSE>>=
 strCaption <- "\\textbf{L. monocytogenes Positions 751-1000 Pipeline Comparison 1} Characteristics of variant calls for different bioinformatic pipelines."
 print(xtable(vcf_tables_lm_4, 
              digits=2, 
@@ -124,7 +125,7 @@ print(xtable(vcf_tables_lm_4,
       caption.placement="top",)
 @
 
-<< lm_vcf_table_5, results='asis',echo=FALSE>>=
+<< lm_vcf_table_5, results=tex,echo=FALSE>>=
 strCaption <- "\\textbf{L. monocytogenes Positions 1001-1250 Pipeline Comparison 1} Characteristics of variant calls for different bioinformatic pipelines."
 print(xtable(vcf_tables_lm_5, 
              digits=2, 
@@ -133,7 +134,7 @@ print(xtable(vcf_tables_lm_5,
       caption.placement="top")
 @
 
-<< lm_vcf_table_6, results='asis',echo=FALSE>>=
+<< lm_vcf_table_6, results=tex,echo=FALSE>>=
 strCaption <- "\\textbf{L. monocytogenes Positions 1251-1500 Pipeline Comparison 1} Characteristics of variant calls for different bioinformatic pipelines."
 print(xtable(vcf_tables_lm_6, 
              digits=2, 

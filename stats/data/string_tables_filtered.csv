@@ -47,6 +47,14 @@
 "Lmono-Sanger-LGC-1","TCG",4
 "Lmono-Sanger-LGC-1","TTA",0
 "Lmono-Sanger-LGC-1","TTG",0
+"Lmono-Sanger-NIST-1","GCA",2
+"Lmono-Sanger-NIST-1","GCG",5
+"Lmono-Sanger-NIST-1","GTA",1
+"Lmono-Sanger-NIST-1","GTG",4
+"Lmono-Sanger-NIST-1","TCA",2
+"Lmono-Sanger-NIST-1","TCG",3
+"Lmono-Sanger-NIST-1","TTA",0
+"Lmono-Sanger-NIST-1","TTG",0
 "Lmono-SangerClones-LGC","GCA",0
 "Lmono-SangerClones-LGC","GCG",6
 "Lmono-SangerClones-LGC","GTA",3
