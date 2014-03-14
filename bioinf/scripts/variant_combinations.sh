@@ -3,7 +3,7 @@
 Ecoli_ref=../resources/Ecoli_16S_consensus.fasta
 Lmono_ref=../resources/Lmono_16S_consensus.fasta
 
-for i in *TMAP-refine.bam;
+for i in *TMAP-refine.bam *SangerClones*bam;
 do
 	if [[ $i == Ecoli* ]]; then
 		f=$Ecoli_ref
