@@ -43,4 +43,5 @@ print(xtable(base_ratio_summary_df[base_ratio_summary_df$Org == "Lmono", -1],
       include.rownames = FALSE,
       caption.placement="top")
 @
+
 \end{document}

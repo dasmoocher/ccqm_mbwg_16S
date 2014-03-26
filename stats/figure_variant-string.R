@@ -13,6 +13,7 @@ library(stringr)
 
 #loading data
 biovar <- read.csv(str_c(stat_data_loc, "string_tables_filtered.csv", sep = ""))
+biovar <- biovar[!(grepl("ION", biovar$dataset)),]
 biovar <-ddply(biovar, "dataset", transform,
                prop = counts / sum(counts), 
                n = sum(counts))
@@ -46,7 +47,7 @@ biovar_plot <- function(org){
     theme(strip.text = element_text(face = "italic"), 
           legend.position = "bottom", legend.direction = "horizontal",
           axis.text.x = element_blank()) +
-    labs(x = "Variant String", y = "Observed Proportion", fill = "Dataset") + 
+    labs(x = "Dataset", y = "Observed Proportion", fill = "Dataset") + 
     facet_grid(org~variant_string, scale = "free_x")
   return(bvp)
 }
