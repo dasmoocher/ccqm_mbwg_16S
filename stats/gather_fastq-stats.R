@@ -13,8 +13,6 @@ read_table <- function(filename){
   ds <- filename
   ds <-str_replace(ds, pattern="-fastq-stats.txt", replace="")
   stat_table$dataset <- ds
-  print(filename)
-  print(stat_table)
   return(stat_table[stat_table$V1 %in% c("stats_info","stats_len"),])
 }
 

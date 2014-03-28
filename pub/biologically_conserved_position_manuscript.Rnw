@@ -3,17 +3,17 @@
 \usepackage{longtable}
 
 \begin{document}
-\SweaveOpts{concordance=TRUE}
+\Sexpr{opts_chunk$set(concordance=TRUE, message=FALSE)}
 <<echo=FALSE,message=FALSE>>=
 # requirements for tables
-source("../../stats/file_locations.R")
+source("../stats/file_locations.R")
 require(stringr)
 require(plyr)
 require(reshape2)
 require(xtable)
 @
 
-<<vcf_table_df, echo=FALSE, error=FALSE,warning=FALSE>>=
+<<vcf_table_df,echo=FALSE,error=FALSE,warning=FALSE>>=
 read_vcf_table <- function(tsv){
   vcf_table <- read.table(str_c(bioinf_data_loc,tsv,sep = ""), header = TRUE)
   vcf_table$dataset <- tsv #str_replace(string = tsv, pattern = "Full-Table.tsv", replace = "")
@@ -32,20 +32,20 @@ vcf_tables <- vcf_tables[grep(pattern = "*refine-Full-Table.tsv",x = vcf_tables)
 ambigs <- c(6,118,975,979,983,992:996,1011,1395,175,188,419,1492, 1503,1507,1508)
 vcf_tables_df <- ldply(vcf_tables, failwith(NULL, read_vcf_table))
 vcf_tables_df <- vcf_tables_df[!(vcf_tables_df$POS %in% ambigs),]
-vcf_tables_df <- arrange(vcf_tables_df,POS, dataset)
 vcf_tables_df <- cbind(vcf_tables_df, colsplit(vcf_tables_df$dataset,"-",names=c("Org","Plat","Lab", "Rep","Map","mod","Var")))
 vcf_tables_df <- arrange(vcf_tables_df,Org, POS, dataset)
-vcf_tables_df_conserved <- vcf_tables_df[is.na(vcf_tables_df$HaplotypeScore),]
 vcf_tables_df <- vcf_tables_df[!is.na(vcf_tables_df$HaplotypeScore),]
 @
 
 % how to add in summary statistics from non-variant call positions
-<<vcf_tables_summary, echo=FALSE, error=FALSE,warning=FALSE>>=
-vcf_summary_df <- vcf_tables_df[,c(21:24,2,3,5,6, 10, 11)]
+<<vcf_tables_summary,echo=FALSE,error=FALSE,warning=FALSE>>=
+vcf_summary_df <- subset(vcf_tables_df, select= c(Org, Plat, Lab, Rep, POS, DP, QUAL,FS))
+#vcf_summary_df$Cause <- "Mapping error"
+#vcf_summary_df$Cause[vcf_summary_df$FS > 60] <- "Strand bias"
 @
 
 
-<< vcf_sumary_table, results=tex,echo=FALSE>>=
+<<vcf_sumary_table,results='asis',echo=FALSE>>=
 strCaption <- "\\textbf{Biologically Conserved Position Variant Comparisons} Characteristics of variant calls for biologically conserved positions for different datasets."
 print(xtable(vcf_summary_df, 
              digits = 0,
@@ -54,18 +54,4 @@ print(xtable(vcf_summary_df,
       caption.placement="top")
 @
 
-<<vcf_consensus_summary, echo=FALSE, error=FALSE,warning=FALSE>>=
-vcf_tables_df_conserved <- vcf_tables_df_conserved[!(is.na(vcf_tables_df_conserved$DP)),]
-vcf_tables_df_conserved$DQ <- vcf_tables_df_conserved$QUAL / vcf_tables_df_conserved$DP 
-vcf_consensus_summary <- ddply(vcf_tables_df_conserved,.(Org, Plat, Lab,Rep),summarize, "Raw Qual" = median(QUAL), "Normalized" = median(DQ), Min = min(DQ), Max = max(DQ))
-@
-
-<< vcf_consensus_table, results=tex,echo=FALSE>>=
-strCaption <- "\\textbf{Biologically Conserved Position Base Qualities} Characteristics of consensus based calls for conserved bases."
-print(xtable(vcf_consensus_summary, 
-             digits = 2,
-             caption=strCaption, label="Biologically Conserved Position Comparison"), 
-      include.rownames = FALSE, 
-      caption.placement="top")
-@
 \end{document}

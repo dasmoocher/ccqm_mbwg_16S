@@ -18,7 +18,6 @@ source("file_locations.R")
 
 # set working directory for analysis folder
 vcf_df <- read.csv(str_c(stat_data_loc,"merged_base_ratios.csv", sep = ""))
-
 #  
 # position associated ambiguities
 ambigs <- list(
@@ -41,7 +40,6 @@ vcf_ambigs <- vcf_df[(grepl("Ecoli*", vcf_df$dataset) &
                         vcf_df$POS %in% c(118,975,979,983,992:996,1011,1395)) |
                        (grepl("Lmono*", vcf_df$dataset) & 
                           vcf_df$POS %in% c(175,188,419)),]
-vcf_ambigs <- vcf_ambigs[!(is.na(vcf_ambigs$DP)),]
 
 # bayesian analysis
 Y <- NULL

@@ -1,0 +1,227 @@
+\documentclass{article}
+\usepackage[margin=1in]{geometry}
+\usepackage{booktabs}
+\usepackage{longtable}
+\usepackage{hyperref}
+\usepackage{cleveref}
+\usepackage{titlesec}
+\newcommand{\sectionbreak}{\clearpage}
+
+\begin{document}
+
+
+\title{CCQM Microbial Identity 16S rRNA Interlaboratory Study \\ \vspace{2 mm} {\large Supplemental Results}}
+\author{Nathan Olson}
+\maketitle
+%\tableofcontents
+%\listoffigures
+%\listoftables
+
+<<echo=FALSE,message=FALSE>>=
+# requirements for tables
+source("../stats/file_locations.R")
+require(stringr)
+require(plyr)
+require(reshape2)
+require(xtable)
+@
+
+\section{Biologically Conserved Positions}
+None of the variants for the biologically conserved positions were called using both variant callers, indicating the variants were potential false positives (\cref{Table:PCS}, \cref{Table:PCLM}, and \cref{Table:PCEC}).  Consensus base quality statistics for biologically conserved positions (\cref{Table:BCP}).
+
+<<vcf_table_df,echo=FALSE,error=FALSE,warning=FALSE>>=
+read_vcf_table <- function(tsv){
+  vcf_table <- read.table(str_c(bioinf_data_loc,tsv,sep = ""), header = TRUE)
+  vcf_table$dataset <- str_replace(string = tsv, pattern = "-Table.tsv", replace = "")
+  return(vcf_table) 
+}
+
+vcf_tables <- list.files(bioinf_data_loc)
+vcf_tables <- vcf_tables[grep(pattern = "*Table.tsv",x = vcf_tables)]
+vcf_tables <- vcf_tables[!grepl(pattern = "*Full*",x = vcf_tables)]
+vcf_tables <- vcf_tables[!grepl(pattern = "*basic*",x = vcf_tables)]
+ambigs <- c(6,118,975,979,983,992:996,1011,1395,175,188,419,1492, 1503,1507,1508)
+vcf_tables_df <- ldply(vcf_tables, failwith(NULL, read_vcf_table))
+#visually inspected variant calls to make sure no variants at the ambiguous positions for one organism were called for the other and unintentially left off of the variant calling pipeline comparison table
+vcf_tables_df <- vcf_tables_df[!(vcf_tables_df$POS %in% ambigs),]
+vcf_tables_df <- arrange(vcf_tables_df,POS, dataset)
+vcf_tables_df <- cbind(vcf_tables_df, colsplit(vcf_tables_df$dataset,"-",names=c("Org","Plat","Lab", "Rep","Map","mod","Var")))
+@
+
+
+<<vcf_summary,echo=FALSE,error=FALSE,warning=FALSE,message=FALSE>>=
+vcf_summary <-dcast(vcf_tables_df, Org+Plat+Lab+ Rep~Map*Var, length)
+@
+
+<<summary_table,results='asis',echo=FALSE>>=
+strCaption <- "\\textbf{Variant call counts for pipeline comparisons}"
+shortCaption <- "Variant pipeline comparison"
+print(xtable(vcf_summary, 
+             caption=c(strCaption, shortCaption), label="Table:PCS"), 
+      include.rownames = FALSE,
+      caption.placement="top")
+@
+
+
+<<vcf_consensus_summary,echo=FALSE,error=FALSE,warning=FALSE>>=
+read_vcf_table <- function(tsv){
+  vcf_table <- read.table(str_c(bioinf_data_loc,tsv,sep = ""), header = TRUE)
+  vcf_table$dataset <- tsv #str_replace(string = tsv, pattern = "Full-Table.tsv", replace = "")
+   if(grepl(454, tsv)){
+     if(grepl("Ecoli", tsv)){
+       vcf_table <- vcf_table[!(vcf_table$POS %in% 900:940),]
+     } else if(grepl("Lmono", tsv)){
+       vcf_table <- vcf_table[!(vcf_table$POS %in% 923:963),]
+     }
+   }
+  return(vcf_table) 
+}
+
+vcf_tables <- list.files(bioinf_data_loc)
+vcf_tables <- vcf_tables[grep(pattern = "*refine-Full-Table.tsv",x = vcf_tables)]
+ambigs <- c(6,118,975,979,983,992:996,1011,1395,175,188,419,1492, 1503,1507,1508)
+vcf_tables_df <- ldply(vcf_tables, failwith(NULL, read_vcf_table))
+vcf_tables_df <- vcf_tables_df[!(vcf_tables_df$POS %in% ambigs),]
+vcf_tables_df <- cbind(vcf_tables_df, colsplit(vcf_tables_df$dataset,"-",names=c("Org","Plat","Lab", "Rep","Map","mod","Var")))
+vcf_tables_df <- arrange(vcf_tables_df,Org, POS, dataset)
+vcf_tables_df_conserved <- vcf_tables_df[is.na(vcf_tables_df$HaplotypeScore),]
+vcf_tables_df <- vcf_tables_df[!is.na(vcf_tables_df$HaplotypeScore),]
+
+vcf_tables_df_conserved <- vcf_tables_df_conserved[!(is.na(vcf_tables_df_conserved$DP)),]
+vcf_tables_df_conserved$DQ <- vcf_tables_df_conserved$QUAL / vcf_tables_df_conserved$DP 
+vcf_consensus_summary <- ddply(vcf_tables_df_conserved,.(Org, Plat, Lab,Rep),summarize, "Raw Qual" = median(QUAL), "Normalized" = median(DQ), Min = min(DQ), Max = max(DQ))
+@
+
+<<vcf_consensus_table,results='asis',echo=FALSE>>=
+strCaption <- "\\textbf{Biologically Conserved Position Base Qualities} Characteristics of consensus based calls for conserved bases. Normalized quality values were obtained by dividing the quality values by the raw quality score assigned by GATK foreach biologically conserved base position"
+shortCaptio <- "Biological conserved base quality statistics"
+print(xtable(vcf_consensus_summary, 
+             digits = 2,
+             caption=strCaption, label="Table:BCP"), 
+      include.rownames = FALSE, 
+      caption.placement="top")
+@
+
+  A number of false positive variant calls were due to low sequencing coverage because the targeted sequencing strategy was responsible for false positive variant calls in six of the eight ``454'' datasets.  For those six datasets, a variant was called at the last position in the gap between the two sequencing regions, bases 940 and 963 relative to reference sequences for \textit{E. coli} and \textit{L. monocytogenes}, respectively.  A 40 bp region that was not part of the targeted sequencing region had significantly lower median coverage than the targeted region (2 X vs. 30,110 X, respectively) for all ``454'' datasets combined (Main Paper Figures 1 and 2).  \\
+  
+ False positive variant calls were also attributable to the sequencing strategy and the variant calling algorithm.  Resulting in a number of variants called due to strand bias.  Stand bias was identified as the cause of the false positive variant call because greater than 99\% of the reads were covering the variant bases were in the same direction.  The strand bias was a product of the amplicon-based sequencing.  For the \textit{E. coli} dataset the variant was at the 3’ end of the region 1 amplicon (Main Paper Figure 1) and the variant in the \textit{L. monocytogenes} was as the 5’ end of the region 2 amplicon (Main Paper Figure 2).   As a result a majority of the reads covering the variants were in a single direction as the reads in the other direction were not long enough to cover the variant.  An example is show below \cref{Fig:FS} . For whole genome sequencing data, read direction biases can indicate a systematic error.  The UnifiedGenotyper variant caller takes into consideration strand bias resulting in the false positive variant calls and reports strand bias using the Fisher exact test statistic (see Main Paper Table 2).  A filtering step is commonly performed when calling SNPs that would have identified these as false positive variants due to the low number of reads with the variant base. \\
+
+\begin{figure}
+  \begin{center}
+    \includegraphics[width=\textwidth]{strand_bias_example.png}
+      \caption[Strand bais example]{Example of false positive variant calls due to stran bias.  All of the variants are present in reads that were in a single direction, color indicates read direction, orange - forward and blue - reverse.  Read with variants are all in the reverse direction}
+        \label{Fig:FS}
+  \end{center}
+\end{figure}
+
+\section{Biologically Variable Positions}
+To determine the ratio of bases at the biologically variant positions, a novel Bayesian analysis based on binomial sampling theory was developed.  According to the binomial distribution, the observed base ratios, while precise (due to high coverage), differed significantly from all potential copy ratios.  Subsequently given the observed base ratios a Bayesian approach was used to identify the most probable copy ratio out of the possible abundant base ratios assuming \textit{E. coli} and \textit{L. monocytogenes} have seven and six 16S gene copies respectively (\cref{Fig:LBR,Fig:EBR}).  
+
+\begin{figure}
+  \begin{center}
+    \includegraphics{base_ratio_lmono.pdf}
+      \caption[\textit{L. monocytogenes} base ratios]{\textit{L. monocytogenes} biologically variable position base ratios. Error bars represent the 95 \% posterior credibility interval estimated from a beta binomial distribution.Grey dashed lines indicate the potential base ratios assuming seven gene copies.}
+        \label{Fig:LBR}
+  \end{center}
+\end{figure}
+
+\begin{figure}
+  \begin{center}
+    \includegraphics[width=\textwidth]{base_ratio_ecoli.pdf}
+      \caption[\textit{E. coli} base ratios]{\textit{E. coli} biologically variable position base ratios. Error bars represent the 95 \% posterior credibility interval estimated from a beta binomial distribution. Grey dashed lines indicate the potential base ratios assuming seven gene copies.}
+        \label{Fig:EBR}
+  \end{center}
+\end{figure}
+
+\section{Likely sets of variant combinations}
+Most likely combination of variant strings for ``454'' and Sanger Clone library datasets \cref{Table:ECVC} and \cref{Table:LMVC}).  
+<<string_summary_ec,echo=FALSE,message=FALSE>>=
+string_table <- read.csv(str_c(stat_data_loc,"string_stats_ecoli.csv", sep = ""), stringsAsFactors = F )
+string_test <- ddply(string_table, .(dataset), summarize, chimera = min(chimera))
+string_test2 <- join(string_test,string_table)
+st2m <- melt(string_test2, id.vars=c("dataset", "likelihood", "chimera"))
+st2m$string[st2m$value == 1] <- "ACCGATTGTA"
+st2m$string[st2m$value == 2] <- "ACCGATTGTG"
+st2m$string[st2m$value == 3] <- "GGTAGAATCG"
+st2m$string[st2m$value == 4] <- "GGTAGAATCA"
+st2ec <- dcast(st2m, dataset*likelihood*chimera~string)
+st2ec$dataset[st2ec$dataset == "Ecoli-Total"] <- "Consensus" 
+@
+<<ec_string_table,results='asis',echo=FALSE>>=
+strCaption <- "\\textbf{Estimated most likely set of variant combinations for \\textit{E. coli}}"
+shortCaption <- "\\textit{E. coli} variant combinations"
+print(xtable(st2ec, 
+             caption=c(strCaption, shortCaption), label="Table:ECVC"), 
+      include.rownames = FALSE,
+      caption.placement="top")
+@
+<<string_summary_lm,echo=FALSE,message=FALSE>>=
+string_table <- read.csv(str_c(stat_data_loc,"string_stats_lmono.csv", sep = ""), stringsAsFactors = F )
+#string_test <- ddply(string_table, .(dataset), summarize, likelihood = max(likelihood))
+string_test <- ddply(string_table, .(dataset), summarize, chimera = min(chimera))
+string_test2 <- join(string_test,string_table)
+st2m <- melt(string_test2, id.vars=c("dataset", "likelihood", "chimera"))
+st2m$string[st2m$value == 1] <- "GCG"
+st2m$string[st2m$value == 2] <- "GTG"
+st2m$string[st2m$value == 3] <- "TCG"
+st2m$string[st2m$value == 4] <- "GTA"
+st2m$string[st2m$value == 5] <- "GCA"
+st2m$string[st2m$value == 6] <- "TCA"
+st2m$string[st2m$value == 7] <- "TTA"
+st2m$string[st2m$value == 8] <- "TTG"
+st2lm <- dcast(st2m, dataset*likelihood*chimera~string)
+st2lm$dataset[st2lm$dataset == "Lmono-Total"] <- "Consensus" 
+@
+
+<<lm_string_table,results='asis',echo=FALSE>>=
+strCaption <- "\\textbf{Estimated most likely set of variant combinations for \\textit{L. monocyotogenes}}"
+shortCaption <- "\\textit{L. monocytogenes} variant combinations"
+print(xtable(st2lm, 
+             caption=c(strCaption, shortCaption), label="Table:LMVC"), 
+      include.rownames = FALSE,
+      caption.placement="top")
+@
+
+\section{Appendix}
+<<vcf_all_variants,echo=FALSE,error=FALSE,warning=FALSE>>=
+read_vcf_table <- function(tsv){
+  vcf_table <- read.table(str_c(bioinf_data_loc,tsv,sep = ""), header = TRUE)
+  vcf_table$dataset <- tsv #str_replace(string = tsv, pattern = "Full-Table.tsv", replace = "")
+  return(vcf_table) 
+}
+
+vcf_tables <- list.files(bioinf_data_loc)
+vcf_tables <- vcf_tables[grep(pattern = "*-Table.tsv",x = vcf_tables)]
+vcf_tables <- vcf_tables[!(grepl("Full", vcf_tables))]
+ambigs <- c(6,118,975,979,983,992:996,1011,1395,175,188,419,1492, 1503,1507,1508)
+vcf_tables_df <- ldply(vcf_tables, failwith(NULL, read_vcf_table))
+vcf_tables_df <- vcf_tables_df[!(vcf_tables_df$POS %in% ambigs),]
+vcf_tables_df <- cbind(vcf_tables_df, colsplit(vcf_tables_df$dataset,"-",names=c("Org","Plat","Lab", "Rep","Map","mod","Var")))
+vcf_tables_df <- arrange(vcf_tables_df,Org, POS, dataset)
+vcf_tables_df <- subset(vcf_tables_df, select = c(Org, Plat, Lab, Rep, Map, mod, POS, DP, QUAL, FS, HaplotypeScore))
+@
+
+<<ec_vcf_table,results='asis',echo=FALSE>>=
+strCaption <- "\\textbf{\\textit{E. coli} Pipeline Comparison} Characteristics of variant calls for different bioinformatic pipelines."
+shortCaption <- "\\textit{E. coli} positions pipeline comparison"
+print(xtable(vcf_tables_df[vcf_tables_df$Org == "Ecoli",], 
+             digits=2, 
+             caption=c(strCaption, shortCaption), label="Table:PCEC"), 
+      include.rownames = FALSE,
+      tabular.environment='longtable', 
+      floating = FALSE,
+      caption.placement="top")
+@
+
+<<lm_vcf_table,results='asis',echo=FALSE>>=
+strCaption <- "\\textbf{\\textit{L. monocytogenes} Positions Pipeline Comparison} Characteristics of variant calls for different bioinformatic pipelines."
+shortCaption <- "\\textit{L. monocytogenes} positions pipeline pomparison"
+print(xtable(vcf_tables_df[vcf_tables_df$Org == "Lmono",], 
+             digits=2, 
+             caption=c(strCaption, shortCaption), label="Table:PCLM"),
+      include.rownames = FALSE,
+      tabular.environment='longtable', 
+      floating = FALSE,
+      caption.placement="top",)
+@
+\end{document}

@@ -1,3 +1,4 @@
+source("file_locations.R")
 source("gather_fastq-stats.R")
 source("gather_base-ratio.R")
 source("analysis_base-ratio.R")
@@ -7,4 +8,3 @@ source("gather_variant-string_primary.R")
 source("gather_variant-string_secondary.R")
 source("analysis_variant-string.R")
 source("figure_variant-string.R")
-

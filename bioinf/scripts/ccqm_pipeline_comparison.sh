@@ -3,7 +3,7 @@
 #####
 # pipeline for processing data from CCQM study for variant call analysis
 #
-# Created by: Nate olson
+# Created by: Nate Olson
 #
 # Written 05/15/2013
 #
@@ -49,7 +49,8 @@ mapping(){
 	$BIN/tmap mapall -f $f -r $fq -n 4 -v -Y -u -o 0 stage1 map4 > $prefix2-TMAP.bam #$prefix2-TMAP.sam
 	#samtools view -bSh -o $prefix2-TMAP.bam $prefix2-TMAP.sam
 	#mapping datasets using bwa bwasw
-	$BIN/bwa mem -t 4 $f $fq > $prefix2-bwa.sam
+	$BIN/bwa bwasw -t 4 $f $fq > $prefix2-bwa.sam
+	#$BIN/bwa mem -t 4 $f $fq > $prefix2-bwa.sam
 	$BIN/samtools view -bSh -o $prefix2-bwa.bam $prefix2-bwa.sam
 }
 

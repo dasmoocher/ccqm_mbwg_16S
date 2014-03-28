@@ -3,33 +3,34 @@
 \usepackage{longtable}
 
 \begin{document}
-\SweaveOpts{concordance=TRUE}
+\Sexpr{opts_chunk$set(concordance=TRUE, message=FALSE)}
 <<echo=FALSE,message=FALSE>>=
 # requirements for tables
-source("../../stats/file_locations.R")
+source("../stats/file_locations.R")
 require(stringr)
 require(plyr)
 require(reshape2)
 require(xtable)
 @
 
-<<ratio_table_df, echo=FALSE, error=FALSE,warning=FALSE>>=
+<<ratio_table_df,echo=FALSE,error=FALSE,warning=FALSE>>=
 base_ratio_df <- read.csv(str_c(stat_data_loc, "biovar_table.csv"), stringsAsFactors = F)
 
 base_ratio_df <- cbind(base_ratio_df, colsplit(base_ratio_df$dataset,"-",names=c("Org","Plat","Lab", "Rep")))
 @
 
 % how to add in summary statistics from non-variant call positions
-<<base_ratio_tables_summary, echo=FALSE, error=FALSE,warning=FALSE>>=
+<<base_ratio_tables_summary,echo=FALSE,error=FALSE,warning=FALSE>>=
 base_ratio_summary_df <- ddply(base_ratio_df,.(Org,Plat, Lab, Rep, exp_ratio, base_ratio), summarize, N = median(N), Prob = median(max_prob))
 base_ratio_summary_df <- arrange(base_ratio_summary_df, Org, Plat, N)
 base_ratio_summary_df <- base_ratio_summary_df[base_ratio_summary_df$exp_ratio != base_ratio_summary_df$base_ratio,]
+#rename exp_ratio to consensus and base_ratio to estimated
 base_ratio_summary_df$Prob <- round(base_ratio_summary_df$Prob,2)
 base_ratio_summary_df$N <- round(base_ratio_summary_df$N,0)
 
 @
 
-<< lm_sumary_table, results=tex,echo=FALSE>>=
+<<lm_sumary_table,results='asis',echo=FALSE>>=
 strCaption <- "\\textbf{Base ratios estimates for biologically variable positions in disagreement with the consensus estimates}"
 print(xtable(base_ratio_summary_df, 
              caption=strCaption, label="LM Base ratio estimates"), 
