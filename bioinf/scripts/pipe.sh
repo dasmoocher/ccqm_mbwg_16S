@@ -11,10 +11,10 @@
 #####
 
 bash scripts/trace_to_fastq.sh
-#bash scripts/sra_to_fastq.sh
+bash scripts/sra_to_fastq.sh
 cd results
 bash ../scripts/ccqm_pipeline_comparison.sh \
-	../resources/metadata_sanger.csv \
+	../resources/metadata.csv \
 	../resources/Lmono_16S_consensus.fasta \
 	../resources/Ecoli_16S_consensus.fasta
 bash ../scripts/fastq_stats.sh
