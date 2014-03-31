@@ -28,6 +28,7 @@ biovar$variant_string <- factor(biovar$variant_string, levels = c("GCG","GTG","T
                                                         "ACCGATTGTA","ACCGATTGTG","GGTAGAATCG","GGTAGAATCA"))
 biovar$dataset <- str_replace(biovar$dataset, "Ecoli-","")
 biovar$dataset <- str_replace(biovar$dataset, "Lmono-","")
+biovar$dataset <- str_replace(biovar$dataset, "-Clones.csv","")
 biovar$dataset <- str_replace(biovar$dataset, "-","\n")
 
 

@@ -5,6 +5,7 @@
 \usepackage{hyperref}
 \usepackage{cleveref}
 \usepackage{titlesec}
+\usepackage{verbatim}
 \newcommand{\sectionbreak}{\clearpage}
 
 \begin{document}
@@ -13,9 +14,9 @@
 \title{CCQM Microbial Identity 16S rRNA Interlaboratory Study \\ \vspace{2 mm} {\large Supplemental Results}}
 \author{Nathan Olson}
 \maketitle
-%\tableofcontents
-%\listoffigures
-%\listoftables
+\tableofcontents
+\listoffigures
+\listoftables
 
 <<echo=FALSE,message=FALSE>>=
 # requirements for tables
@@ -27,40 +28,7 @@ require(xtable)
 @
 
 \section{Biologically Conserved Positions}
-None of the variants for the biologically conserved positions were called using both variant callers, indicating the variants were potential false positives (\cref{Table:PCS}, \cref{Table:PCLM}, and \cref{Table:PCEC}).  Consensus base quality statistics for biologically conserved positions (\cref{Table:BCP}).
-
-<<vcf_table_df,echo=FALSE,error=FALSE,warning=FALSE>>=
-read_vcf_table <- function(tsv){
-  vcf_table <- read.table(str_c(bioinf_data_loc,tsv,sep = ""), header = TRUE)
-  vcf_table$dataset <- str_replace(string = tsv, pattern = "-Table.tsv", replace = "")
-  return(vcf_table) 
-}
-
-vcf_tables <- list.files(bioinf_data_loc)
-vcf_tables <- vcf_tables[grep(pattern = "*Table.tsv",x = vcf_tables)]
-vcf_tables <- vcf_tables[!grepl(pattern = "*Full*",x = vcf_tables)]
-vcf_tables <- vcf_tables[!grepl(pattern = "*basic*",x = vcf_tables)]
-ambigs <- c(6,118,975,979,983,992:996,1011,1395,175,188,419,1492, 1503,1507,1508)
-vcf_tables_df <- ldply(vcf_tables, failwith(NULL, read_vcf_table))
-#visually inspected variant calls to make sure no variants at the ambiguous positions for one organism were called for the other and unintentially left off of the variant calling pipeline comparison table
-vcf_tables_df <- vcf_tables_df[!(vcf_tables_df$POS %in% ambigs),]
-vcf_tables_df <- arrange(vcf_tables_df,POS, dataset)
-vcf_tables_df <- cbind(vcf_tables_df, colsplit(vcf_tables_df$dataset,"-",names=c("Org","Plat","Lab", "Rep","Map","mod","Var")))
-@
-
-
-<<vcf_summary,echo=FALSE,error=FALSE,warning=FALSE,message=FALSE>>=
-vcf_summary <-dcast(vcf_tables_df, Org+Plat+Lab+ Rep~Map*Var, length)
-@
-
-<<summary_table,results='asis',echo=FALSE>>=
-strCaption <- "\\textbf{Variant call counts for pipeline comparisons}"
-shortCaption <- "Variant pipeline comparison"
-print(xtable(vcf_summary, 
-             caption=c(strCaption, shortCaption), label="Table:PCS"), 
-      include.rownames = FALSE,
-      caption.placement="top")
-@
+None of the variants for the biologically conserved positions were called using both variant callers, indicating the variants were potential false positives (Manuscript Table 2, \cref{Table:PCLM,Table:PCEC}).  Consensus base quality statistics for biologically conserved positions (\cref{Table:BCP}).
 
 
 <<vcf_consensus_summary,echo=FALSE,error=FALSE,warning=FALSE>>=
@@ -94,25 +62,19 @@ vcf_consensus_summary <- ddply(vcf_tables_df_conserved,.(Org, Plat, Lab,Rep),sum
 
 <<vcf_consensus_table,results='asis',echo=FALSE>>=
 strCaption <- "\\textbf{Biologically Conserved Position Base Qualities} Characteristics of consensus based calls for conserved bases. Normalized quality values were obtained by dividing the quality values by the raw quality score assigned by GATK foreach biologically conserved base position"
-shortCaptio <- "Biological conserved base quality statistics"
+shortCaption <- "Biological conserved base quality statistics"
 print(xtable(vcf_consensus_summary, 
              digits = 2,
-             caption=strCaption, label="Table:BCP"), 
+             caption=c(strCaption, shortCaption), label="Table:BCP"), 
       include.rownames = FALSE, 
       caption.placement="top")
 @
 
   A number of false positive variant calls were due to low sequencing coverage because the targeted sequencing strategy was responsible for false positive variant calls in six of the eight ``454'' datasets.  For those six datasets, a variant was called at the last position in the gap between the two sequencing regions, bases 940 and 963 relative to reference sequences for \textit{E. coli} and \textit{L. monocytogenes}, respectively.  A 40 bp region that was not part of the targeted sequencing region had significantly lower median coverage than the targeted region (2 X vs. 30,110 X, respectively) for all ``454'' datasets combined (Main Paper Figures 1 and 2).  \\
   
- False positive variant calls were also attributable to the sequencing strategy and the variant calling algorithm.  Resulting in a number of variants called due to strand bias.  Stand bias was identified as the cause of the false positive variant call because greater than 99\% of the reads were covering the variant bases were in the same direction.  The strand bias was a product of the amplicon-based sequencing.  For the \textit{E. coli} dataset the variant was at the 3’ end of the region 1 amplicon (Main Paper Figure 1) and the variant in the \textit{L. monocytogenes} was as the 5’ end of the region 2 amplicon (Main Paper Figure 2).   As a result a majority of the reads covering the variants were in a single direction as the reads in the other direction were not long enough to cover the variant.  An example is show below \cref{Fig:FS} . For whole genome sequencing data, read direction biases can indicate a systematic error.  The UnifiedGenotyper variant caller takes into consideration strand bias resulting in the false positive variant calls and reports strand bias using the Fisher exact test statistic (see Main Paper Table 2).  A filtering step is commonly performed when calling SNPs that would have identified these as false positive variants due to the low number of reads with the variant base. \\
-
-\begin{figure}
-  \begin{center}
-    \includegraphics[width=\textwidth]{strand_bias_example.png}
-      \caption[Strand bais example]{Example of false positive variant calls due to stran bias.  All of the variants are present in reads that were in a single direction, color indicates read direction, orange - forward and blue - reverse.  Read with variants are all in the reverse direction}
-        \label{Fig:FS}
-  \end{center}
-\end{figure}
+  A number of false postive variants were called due to contaminants.  A low level of containating reads (~150) present in the LGC \textit{L. monocytogenes} rep 1 dataset.  A BLAST analysis of a representative of these reads indicated that they were from \textit{E. coli} (E value of 0.0), a well known contaminant of molecular biology reagents (\cref{subsec:BLAST}).  
+  A number of Escherichia coli strains E value of 0.0.  in LGC Lmono rep 1 454 dataset.  
+ False positive variant calls were also attributable to the sequencing strategy and the variant calling algorithm.  Resulting in a number of variants called due to strand bias.  Stand bias was identified as the cause of the false positive variant call because greater than 99\% of the reads were covering the variant bases were in the same direction.  The strand bias was a product of the amplicon-based sequencing.  For the \textit{E. coli} dataset the variant was at the 3’ end of the region 1 amplicon (Main Paper Figure 1) and the variant in the \textit{L. monocytogenes} was as the 5’ end of the region 2 amplicon (Main Paper Figure 2).   As a result a majority of the reads covering the variants were in a single direction as the reads in the other direction were not long enough to cover the variant.   For whole genome sequencing data, read direction biases can indicate a systematic error.  The UnifiedGenotyper variant caller takes into consideration strand bias resulting in the false positive variant calls and reports strand bias using the Fisher exact test statistic (see Main Paper Table 2).  A filtering step is commonly performed when calling SNPs that would have identified these as false positive variants due to the low number of reads with the variant base. \\
 
 \section{Biologically Variable Positions}
 To determine the ratio of bases at the biologically variant positions, a novel Bayesian analysis based on binomial sampling theory was developed.  According to the binomial distribution, the observed base ratios, while precise (due to high coverage), differed significantly from all potential copy ratios.  Subsequently given the observed base ratios a Bayesian approach was used to identify the most probable copy ratio out of the possible abundant base ratios assuming \textit{E. coli} and \textit{L. monocytogenes} have seven and six 16S gene copies respectively (\cref{Fig:LBR,Fig:EBR}).  
@@ -183,6 +145,9 @@ print(xtable(st2lm,
 @
 
 \section{Appendix}
+\subsection*{Full List of False Positive Variants}
+All variants called by the 8 piplines used during the pipeline validation along with the suspected cause of the variant.
+
 <<vcf_all_variants,echo=FALSE,error=FALSE,warning=FALSE>>=
 read_vcf_table <- function(tsv){
   vcf_table <- read.table(str_c(bioinf_data_loc,tsv,sep = ""), header = TRUE)
@@ -191,14 +156,54 @@ read_vcf_table <- function(tsv){
 }
 
 vcf_tables <- list.files(bioinf_data_loc)
-vcf_tables <- vcf_tables[grep(pattern = "*-Table.tsv",x = vcf_tables)]
+vcf_tables <- vcf_tables[grep(pattern = "*refine.*-Table.tsv",x = vcf_tables)]
 vcf_tables <- vcf_tables[!(grepl("Full", vcf_tables))]
 ambigs <- c(6,118,975,979,983,992:996,1011,1395,175,188,419,1492, 1503,1507,1508)
 vcf_tables_df <- ldply(vcf_tables, failwith(NULL, read_vcf_table))
 vcf_tables_df <- vcf_tables_df[!(vcf_tables_df$POS %in% ambigs),]
-vcf_tables_df <- cbind(vcf_tables_df, colsplit(vcf_tables_df$dataset,"-",names=c("Org","Plat","Lab", "Rep","Map","mod","Var")))
-vcf_tables_df <- arrange(vcf_tables_df,Org, POS, dataset)
-vcf_tables_df <- subset(vcf_tables_df, select = c(Org, Plat, Lab, Rep, Map, mod, POS, DP, QUAL, FS, HaplotypeScore))
+vcf_tables_df <- cbind(vcf_tables_df, colsplit(vcf_tables_df$dataset,"-",names=c("Org","Plat","Lab", "Rep","Map","mod","Var", "other")))
+vcf_tables_df <- arrange(vcf_tables_df,Org, Plat, Lab, Rep, POS)
+vcf_tables_df$Cause[vcf_tables_df$Plat == "454" & vcf_tables_df$DP < 50] <- "Low Coverage"
+vcf_tables_df$Cause[vcf_tables_df$Plat == "454" & 
+                      vcf_tables_df$POS %in% 900:941 & 
+                      vcf_tables_df$Org == "Ecoli"] <- "Non-target region"
+vcf_tables_df$Cause[vcf_tables_df$Plat == "454" & 
+                      vcf_tables_df$POS %in% 923:963 & 
+                      vcf_tables_df$Org == "Lmono"] <- "Non-target region"
+vcf_tables_df$Cause[vcf_tables_df$POS %in% 1462:1465 & 
+                      vcf_tables_df$Org == "Ecoli"] <- "End of reference"
+vcf_tables_df$Cause[vcf_tables_df$POS >  1504 & 
+                      vcf_tables_df$Org == "Lmono"] <- "End of reference"
+vcf_tables_df$Cause[vcf_tables_df$FS > 60] <- "Strand bias"
+vcf_tables_df$Cause[vcf_tables_df$MQ < 40] <- "Low mapping quality"
+vcf_tables_df$Cause[grepl("Lmono-454-LGC-1", vcf_tables_df$dataset) & 
+                      vcf_tables_df$POS %in% c(500:757,924:1502)] <- "Contaminants"
+vcf_tables_df$Cause[grepl("Lmono-454-LGC-2-bwa", vcf_tables_df$dataset) & 
+                      vcf_tables_df$POS %in% c(315,328,1047:1356)] <- "Contaminants"
+vcf_tables_df$Cause[vcf_tables_df$dataset == "Lmono-454-NMIA-1-bwa-refine-gatk-Table.tsv" & 
+                      vcf_tables_df$POS == 381] <- "End of read"
+vcf_tables_df$Cause[vcf_tables_df$dataset == "Lmono-454-NMIA-1-TMAP-refine-gatk-Table.tsv" & 
+                      vcf_tables_df$POS == 533] <- "End of read"
+vcf_tables_df$Cause[vcf_tables_df$dataset == "Lmono-Sanger-LGC-1-bwa-refine-sam-Table.tsv" & 
+                      vcf_tables_df$POS %in% c(390, 1409)] <- "End of read"
+vcf_tables_df$Cause[vcf_tables_df$dataset == "Ecoli-454-LGC-1-bwa-refine-sam-Table.tsv" & 
+                      vcf_tables_df$POS == 396] <- "End of read"
+vcf_tables_df$Cause[vcf_tables_df$dataset == "Ecoli-454-LGC-1-TMAP-refine-sam-Table.tsv" & 
+                      vcf_tables_df$POS == 396] <- "End of read"
+vcf_tables_df$Cause[vcf_tables_df$dataset == "Ecoli-454-LGC-1-bwa-refine-gatk-Table.tsv" & 
+                      vcf_tables_df$POS == 959] <- "End of read"
+vcf_tables_df$Cause[vcf_tables_df$dataset == "Ecoli-454-LGC-2-bwa-refine-gatk-Table.tsv" & 
+                      vcf_tables_df$POS == 106] <- "End of read"
+vcf_tables_df$Cause[vcf_tables_df$dataset == "Ecoli-454-LGC-2-bwa-refine-gatk-Table.tsv" & 
+                      vcf_tables_df$POS == 959] <- "End of read"
+vcf_tables_df$Cause[vcf_tables_df$dataset == "Ecoli-454-LGC-3-bwa-refine-gatk-Table.tsv" &
+                      vcf_tables_df$POS %in% c(325,348)] <- "End of read"
+vcf_tables_df$Cause[vcf_tables_df$dataset == "Ecoli-454-NMIA-1-TMAP-refine-gatk-Table.tsv" &
+                      vcf_tables_df$POS %in% c(508,509,510,514)] <- "End of read"
+vcf_tables_df$Cause[vcf_tables_df$dataset == "Ecoli-454-NMIA-1-TMAP-refine-sam-Table.tsv" &
+                      vcf_tables_df$POS == 514] <- "End of read"
+vcf_tables_df$Cause[vcf_tables_df$Org == "Ecoli" & vcf_tables_df$POS == 417] <- "Homopolymer"
+vcf_tables_df <- subset(vcf_tables_df, select = c(Org, Plat, Lab, Rep, Map, Var, POS, DP, QUAL, MQ , FS,  Cause))
 @
 
 <<ec_vcf_table,results='asis',echo=FALSE>>=
@@ -224,4 +229,9 @@ print(xtable(vcf_tables_df[vcf_tables_df$Org == "Lmono",],
       floating = FALSE,
       caption.placement="top",)
 @
+
+\subsection*{Contaminants - BLAST results}
+\label{subsec:BLAST}
+BLAST reports for representative sequences of reads responsible for false positive variant calls in the LGC \textit{L. monocytogenes} ``454'' rep 1 dataset.
+\verbatiminput{Lmono-contaminant-blast-region2.txt}
 \end{document}

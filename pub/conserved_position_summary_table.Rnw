@@ -1,0 +1,91 @@
+\documentclass{article}
+\usepackage{booktabs}
+\usepackage{rotating}
+
+\begin{document}
+\Sexpr{opts_chunk$set(concordance=TRUE, message=FALSE)}
+<<echo=FALSE,message=FALSE>>=
+# requirements for tables
+source("../stats/file_locations.R")
+require(stringr)
+require(plyr)
+require(reshape2)
+require(xtable)
+@
+
+<<echo=FALSE,message=FALSE>>=
+read_vcf_table <- function(tsv){
+  vcf_table <- read.table(str_c(bioinf_data_loc,tsv,sep = ""), header = TRUE)
+  vcf_table$dataset <- tsv #str_replace(string = tsv, pattern = "Full-Table.tsv", replace = "")
+  return(vcf_table) 
+}
+
+vcf_tables <- list.files(bioinf_data_loc)
+vcf_tables <- vcf_tables[grep(pattern = "*refine.*-Table.tsv",x = vcf_tables)]
+vcf_tables <- vcf_tables[!(grepl("Full", vcf_tables))]
+ambigs <- c(6,118,975,979,983,992:996,1011,1395,175,188,419,1492, 1503,1507,1508)
+vcf_tables_df <- ldply(vcf_tables, failwith(NULL, read_vcf_table))
+vcf_tables_df <- vcf_tables_df[!(vcf_tables_df$POS %in% ambigs),]
+vcf_tables_df <- cbind(vcf_tables_df, colsplit(vcf_tables_df$dataset,"-",names=c("Org","Plat","Lab", "Rep","Map","mod","Var", "other")))
+vcf_tables_df <- arrange(vcf_tables_df,Org, Plat, Lab, Rep, POS)
+vcf_tables_df$Cause[vcf_tables_df$Plat == "454" & vcf_tables_df$DP < 50] <- "Low Coverage"
+vcf_tables_df$Cause[vcf_tables_df$Plat == "454" & 
+                      vcf_tables_df$POS %in% 900:941 & 
+                      vcf_tables_df$Org == "Ecoli"] <- "Non-target region"
+vcf_tables_df$Cause[vcf_tables_df$Plat == "454" & 
+                      vcf_tables_df$POS %in% 923:963 & 
+                      vcf_tables_df$Org == "Lmono"] <- "Non-target region"
+vcf_tables_df$Cause[vcf_tables_df$POS %in% 1462:1465 & 
+                      vcf_tables_df$Org == "Ecoli"] <- "End of reference"
+vcf_tables_df$Cause[vcf_tables_df$POS >  1504 & 
+                      vcf_tables_df$Org == "Lmono"] <- "End of reference"
+vcf_tables_df$Cause[vcf_tables_df$FS > 60] <- "Strand bias"
+vcf_tables_df$Cause[vcf_tables_df$MQ < 40] <- "Low mapping quality"
+vcf_tables_df$Cause[grepl("Lmono-454-LGC-1", vcf_tables_df$dataset) & 
+                      vcf_tables_df$POS %in% c(500:757,924:1502)] <- "Contaminant"
+vcf_tables_df$Cause[grepl("Lmono-454-LGC-2-bwa", vcf_tables_df$dataset) & 
+                      vcf_tables_df$POS %in% c(315,328,1047:1356)] <- "Contaminant"
+vcf_tables_df$Cause[vcf_tables_df$dataset == "Lmono-454-NMIA-1-bwa-refine-gatk-Table.tsv" & 
+                      vcf_tables_df$POS == 381] <- "End of read"
+vcf_tables_df$Cause[vcf_tables_df$dataset == "Lmono-454-NMIA-1-TMAP-refine-gatk-Table.tsv" & 
+                      vcf_tables_df$POS == 533] <- "End of read"
+vcf_tables_df$Cause[vcf_tables_df$dataset == "Lmono-Sanger-LGC-1-bwa-refine-sam-Table.tsv" & 
+                      vcf_tables_df$POS %in% c(390, 1409)] <- "End of read"
+vcf_tables_df$Cause[vcf_tables_df$dataset == "Ecoli-454-LGC-1-bwa-refine-sam-Table.tsv" & 
+                      vcf_tables_df$POS == 396] <- "End of read"
+vcf_tables_df$Cause[vcf_tables_df$dataset == "Ecoli-454-LGC-1-TMAP-refine-sam-Table.tsv" & 
+                      vcf_tables_df$POS == 396] <- "End of read"
+vcf_tables_df$Cause[vcf_tables_df$dataset == "Ecoli-454-LGC-1-bwa-refine-gatk-Table.tsv" & 
+                      vcf_tables_df$POS == 959] <- "End of read"
+vcf_tables_df$Cause[vcf_tables_df$dataset == "Ecoli-454-LGC-2-bwa-refine-gatk-Table.tsv" & 
+                      vcf_tables_df$POS == 106] <- "End of read"
+vcf_tables_df$Cause[vcf_tables_df$dataset == "Ecoli-454-LGC-2-bwa-refine-gatk-Table.tsv" & 
+                      vcf_tables_df$POS == 959] <- "End of read"
+vcf_tables_df$Cause[vcf_tables_df$dataset == "Ecoli-454-LGC-3-bwa-refine-gatk-Table.tsv" &
+                      vcf_tables_df$POS %in% c(325,348)] <- "End of read"
+vcf_tables_df$Cause[vcf_tables_df$dataset == "Ecoli-454-NMIA-1-TMAP-refine-gatk-Table.tsv" &
+                      vcf_tables_df$POS %in% c(508,509,510,514)] <- "End of read"
+vcf_tables_df$Cause[vcf_tables_df$dataset == "Ecoli-454-NMIA-1-TMAP-refine-sam-Table.tsv" &
+                      vcf_tables_df$POS == 514] <- "End of read"
+vcf_tables_df$Cause[vcf_tables_df$Org == "Ecoli" & vcf_tables_df$POS == 417] <- "Homopolymer"
+vcf_tables_df <- subset(vcf_tables_df, select = c(Org, Plat, Lab, Rep, Map, Var, POS, DP, QUAL, MQ , FS,  Cause))
+@
+
+% how to add in summary statistics from non-variant call positions
+<<vcf_tables_summary,echo=FALSE,error=FALSE,warning=FALSE>>=
+vcf_summary_df <- dcast(vcf_tables_df,Org*Plat*Lab*Map*Var~Cause, length, margins = unique(vcf_tables_df$Cause))
+@
+
+
+<<vcf_sumary_table,results='asis',echo=FALSE>>=
+strCaption <- "\\textbf{Biologically Conserved Position Variant Comparisons.} Cause of false positive variant calls for biologically conserved positions."
+print(xtable(vcf_summary_df, 
+             digits = 0,
+             caption=strCaption, label="Biologically Conserved Position Comparison"), 
+      include.rownames = FALSE,
+      floating.environment='sidewaystable',
+      caption.placement="top")
+@
+
+\end{document}}
+
