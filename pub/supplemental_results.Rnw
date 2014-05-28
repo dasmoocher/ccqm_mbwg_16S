@@ -3,7 +3,13 @@
 \usepackage{booktabs}
 \usepackage{longtable}
 \usepackage{hyperref}
-\usepackage{cleveref}
+\usepackage[capitalize]{cleveref}
+
+% adding S for supplemental figures and tables
+\makeatletter
+\renewcommand{\thefigure}{S\@arabic\c@figure}
+\renewcommand{\thetable}{S\@arabic\c@table}
+
 \usepackage{titlesec}
 \usepackage{verbatim}
 \newcommand{\sectionbreak}{\clearpage}
