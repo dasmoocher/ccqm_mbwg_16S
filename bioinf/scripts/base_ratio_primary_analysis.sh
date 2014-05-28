@@ -25,7 +25,7 @@ Ecoli_ref=../resources/Ecoli_16S_consensus_no_ambigs.fasta
 Lmono_ref=../resources/Lmono_16S_consensus_no_ambigs.fasta
 
 index_reference() {
-	$BIN/samtools faidx $1
+	$BIN/tmap samtools faidx $1
 	java -$JAVA -jar $BIN/CreateSequenceDictionary.jar R=$1 O=$(echo $1 | sed 's/fasta/dict/')	
 }
 

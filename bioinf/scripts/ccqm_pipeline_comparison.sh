@@ -34,7 +34,7 @@ JAVA=Xmx2g
 ### Are any of these redundant????
 index_reference() {
 	$BIN/tmap index -f $1
-	$BIN/samtools faidx $1
+	$BIN/tmap samtools faidx $1
 	$BIN/bwa index $1
 	java -$JAVA -jar $BIN/CreateSequenceDictionary.jar R=$1 O=$(echo $1 | sed 's/fasta/dict/')	
 }
@@ -51,7 +51,7 @@ mapping(){
 	#mapping datasets using bwa bwasw
 	#$BIN/bwa bwasw -t 4 $f $fq > $prefix2-bwa.sam
 	$BIN/bwa mem -t 4 $f $fq > $prefix2-bwa.sam
-	$BIN/samtools view -bSh -o $prefix2-bwa.bam $prefix2-bwa.sam
+	$BIN/tmap samtools view -bSh -o $prefix2-bwa.bam $prefix2-bwa.sam
 }
 
 bam_processing(){
@@ -69,7 +69,7 @@ bam_processing(){
 	java -$JAVA -jar $BIN/AddOrReplaceReadGroups.jar I= $bam O= $prefix3.bam RGID=$org RGLB=$rep RGPU=$lab RGPL=ccqm RGSM=$org-$plat-$lab-$rep 
 	echo "SortingSam ..."	
 	java -$JAVA -jar $BIN/SortSam.jar I= $prefix3.bam O= $prefix3.sort.bam SO=coordinate
-	$BIN/samtools index $prefix3.sort.bam
+	$BIN/tmap samtools index $prefix3.sort.bam
 	mv $prefix3.sort.bam $prefix3.bam
 }
 
@@ -87,7 +87,7 @@ bam_refiner(){
 		cp $bam $prefix4.bam	
 	fi
 	
-	$BIN/samtools index $prefix4.bam
+	$BIN/tmap samtools index $prefix4.bam
 	java -$JAVA -jar $BIN/GenomeAnalysisTK.jar -R $f -I $prefix4.bam -T RealignerTargetCreator  -o $prefix4.intervals
 	java -$JAVA -jar $BIN/GenomeAnalysisTK.jar -R $f -I $prefix4.bam -T IndelRealigner -targetIntervals $prefix4.intervals  -o $prefix4.realigned.bam
 	mv $prefix4.realigned.bam $prefix4.bam
@@ -125,14 +125,14 @@ process_fastq_bam() {
 	for bam in $prefix1-TMAP-basic.bam $prefix1-TMAP-refine.bam \
 			$prefix1-bwa-basic.bam $prefix1-bwa-refine.bam;
 	do
-		$BIN/samtools index $bam		
+		$BIN/tmap samtools index $bam		
 		prefix5=$(echo $bam | sed 's/.bam//')
 		#GATK variant calling
 		java -$JAVA -jar $BIN/GenomeAnalysisTK.jar -R $f -I $bam -T UnifiedGenotyper -glm SNP  -o $prefix5-gatk.vcf
 
 		#samtools variant calling
-		$BIN/samtools mpileup -uf $f $bam > $prefix5-sam.pileup
-		$BIN/bcftools view -vcg $prefix5-sam.pileup > $prefix5-sam.vcf
+		$BIN/tmap samtools mpileup -uf $f $bam > $prefix5-sam.pileup
+		$BIN/tmap bcftools view -vcg $prefix5-sam.pileup > $prefix5-sam.vcf
 	done
 }
 

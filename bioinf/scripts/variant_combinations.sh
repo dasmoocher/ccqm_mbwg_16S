@@ -12,7 +12,7 @@ do
 		f=$Lmono_ref
 	fi
 	basename=$(echo $i | sed 's/.bam//')
-	../bin/samtools view -o $basename.sam $i
+	../bin/tmap samtools view -o $basename.sam $i
 	python ../scripts/SAM_parser.py $basename.sam $f $basename.csv
 done
 
