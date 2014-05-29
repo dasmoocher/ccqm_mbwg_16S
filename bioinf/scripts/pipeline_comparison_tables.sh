@@ -18,7 +18,7 @@ set -v
 BIN=../bin #binary directory
 
 #java runtime specs 
-JAVA=Xmx2g
+JAVA=Xmx4g
 
 # reference files
 Ecoli_ref=../resources/Ecoli_16S_consensus.fasta

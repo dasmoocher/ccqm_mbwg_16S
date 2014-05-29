@@ -4,12 +4,12 @@
 \usepackage{longtable}
 \usepackage{hyperref}
 \usepackage[capitalize]{cleveref}
-
 % adding S for supplemental figures and tables
-\makeatletter
+\makeatletter 
 \renewcommand{\thefigure}{S\@arabic\c@figure}
 \renewcommand{\thetable}{S\@arabic\c@table}
-
+\makeatother
+%
 \usepackage{titlesec}
 \usepackage{verbatim}
 \newcommand{\sectionbreak}{\clearpage}
@@ -34,7 +34,7 @@ require(xtable)
 @
 
 \section{Biologically Conserved Positions}
-None of the variants for the biologically conserved positions were called using both variant callers, indicating the variants were potential false positives (Manuscript Table 2, \cref{Table:PCLM,Table:PCEC}).  Consensus base quality statistics for biologically conserved positions (\cref{Table:BCP}).
+None of the variants for the biologically conserved positions were called using both variant callers, indicating that the variants were potential false positives (Manuscript Table 2, \cref{STable:PCLM,STable:PCEC}).  Consensus base quality statistics for biologically conserved positions (\cref{STable:BCP}).
 
 
 <<vcf_consensus_summary,echo=FALSE,error=FALSE,warning=FALSE>>=
@@ -67,42 +67,43 @@ vcf_consensus_summary <- ddply(vcf_tables_df_conserved,.(Org, Plat, Lab,Rep),sum
 @
 
 <<vcf_consensus_table,results='asis',echo=FALSE>>=
-strCaption <- "\\textbf{Biologically Conserved Position Base Qualities} Characteristics of consensus based calls for conserved bases. Normalized quality values were obtained by dividing the quality values by the raw quality score assigned by GATK foreach biologically conserved base position"
+strCaption <- "\\textbf{Biologically Conserved Position Base Qualities} Characteristics of consensus based calls for conserved bases. Normalized quality values were obtained by dividing raw quality score (Raw Qual) assigned by GATK for each biologically conserved base position by the depth of coverage for that position"
 shortCaption <- "Biological conserved base quality statistics"
 print(xtable(vcf_consensus_summary, 
              digits = 2,
-             caption=c(strCaption, shortCaption), label="Table:BCP"), 
+             caption=c(strCaption, shortCaption), label="STable:BCP"), 
       include.rownames = FALSE, 
       caption.placement="top")
 @
 
-  A number of false positive variant calls were due to low sequencing coverage because the targeted sequencing strategy was responsible for false positive variant calls in six of the eight ``454'' datasets.  For those six datasets, a variant was called at the last position in the gap between the two sequencing regions, bases 940 and 963 relative to reference sequences for \textit{E. coli} and \textit{L. monocytogenes}, respectively.  A 40 bp region that was not part of the targeted sequencing region had significantly lower median coverage than the targeted region (2 X vs. 30,110 X, respectively) for all ``454'' datasets combined (Main Paper Figures 1 and 2).  \\
+  A number of false positive variant calls were due to low sequencing coverage because the targeted sequencing strategy was responsible for false positive variant calls in six of the eight ``454'' datasets, excluding \textbf{NEED TO SPECIFY WHICH ONES}.  For those six datasets, a variant was called at the last position in the gap between the two sequencing regions, bases 940 and 963 relative to reference sequences for \textit{E. coli} and \textit{L. monocytogenes}, respectively.  A 40 bp region that was not part of the targeted sequencing region had significantly lower median coverage than the targeted region (2 X vs. 30,110 X, respectively) for all ``454'' datasets combined (Figures 1 and 2).  \\
   
-  A number of false postive variants were called due to contaminants.  A low level of containating reads (~150) present in the LGC \textit{L. monocytogenes} rep 1 dataset.  A BLAST analysis of a representative of these reads indicated that they were from \textit{E. coli} (E value of 0.0), a well known contaminant of molecular biology reagents (\cref{subsec:BLAST}).  
+  A number of false postive variants were called due to contaminants.  A low level of containating reads (~150) were present in the LGC \textit{L. monocytogenes} rep 1 dataset.  A BLAST analysis of a representative of these reads indicated that they were from \textit{E. coli} (E value of 0.0), a well known contaminant of molecular biology reagents (\cref{subsec:BLAST}).  
   A number of Escherichia coli strains E value of 0.0.  in LGC Lmono rep 1 454 dataset.  
- False positive variant calls were also attributable to the sequencing strategy and the variant calling algorithm.  Resulting in a number of variants called due to strand bias.  Stand bias was identified as the cause of the false positive variant call because greater than 99\% of the reads were covering the variant bases were in the same direction.  The strand bias was a product of the amplicon-based sequencing.  For the \textit{E. coli} dataset the variant was at the 3’ end of the region 1 amplicon (Main Paper Figure 1) and the variant in the \textit{L. monocytogenes} was as the 5’ end of the region 2 amplicon (Main Paper Figure 2).   As a result a majority of the reads covering the variants were in a single direction as the reads in the other direction were not long enough to cover the variant.   For whole genome sequencing data, read direction biases can indicate a systematic error.  The UnifiedGenotyper variant caller takes into consideration strand bias resulting in the false positive variant calls and reports strand bias using the Fisher exact test statistic (see Main Paper Table 2).  A filtering step is commonly performed when calling SNPs that would have identified these as false positive variants due to the low number of reads with the variant base. \\
+ False positive variant calls were also attributable to the sequencing strategy and the variant calling algorithm.  Resulting in a number of variants called due to strand bias.  Stand bias was identified as the cause of the false positive variant call because greater than 99\% of the reads were covering the variant bases were in the same direction.  The strand bias was a product of the amplicon-based sequencing.  For the \textit{E. coli} dataset the variant was at the 3 prime end of the region 1 amplicon (Fig. 1) and the variant in the \textit{L. monocytogenes} was as the 5 prime end of the region 2 amplicon (Fig. 2).   As a result a majority of the reads covering the variants were in a single direction as the reads in the other direction were not long enough to cover the variant.   For whole genome sequencing data, read direction biases can indicate a systematic error.  The UnifiedGenotyper variant caller takes into consideration strand bias resulting in the false positive variant calls and reports strand bias using the Fisher exact test statistic (see Table 2).  A filtering step is commonly performed when calling SNPs that would have identified these as false positive variants due to the low number of reads with the variant base. \\
 
 \section{Biologically Variable Positions}
-To determine the ratio of bases at the biologically variant positions, a novel Bayesian analysis based on binomial sampling theory was developed.  According to the binomial distribution, the observed base ratios, while precise (due to high coverage), differed significantly from all potential copy ratios.  Subsequently given the observed base ratios a Bayesian approach was used to identify the most probable copy ratio out of the possible abundant base ratios assuming \textit{E. coli} and \textit{L. monocytogenes} have seven and six 16S gene copies respectively (\cref{Fig:LBR,Fig:EBR}).  
+To determine the ratio of bases at the biologically variant positions, a novel Bayesian analysis based on binomial sampling theory was developed (Supplemental Computational Methods).  According to the binomial distribution, the observed base ratios, while precise (due to high coverage), differed significantly from all potential copy ratios.  Subsequently given, the observed base ratios, a Bayesian approach was used to identify the most probable copy ratio out of the possible abundant base ratios assuming \textit{E. coli} and \textit{L. monocytogenes} have seven and six 16S gene copies respectively (\cref{SFig:LBR,SFig:EBR}).  
 
 \begin{figure}
   \begin{center}
     \includegraphics{base_ratio_lmono.pdf}
-      \caption[\textit{L. monocytogenes} base ratios]{\textit{L. monocytogenes} biologically variable position base ratios. Error bars represent the 95 \% posterior credibility interval estimated from a beta binomial distribution.Grey dashed lines indicate the potential base ratios assuming seven gene copies.}
-        \label{Fig:LBR}
+      \caption[\textit{L. monocytogenes} base ratios]{
+      Base ratios at three biologically variable positions (175, 188 and 419) in \textit{L. monocytogenes}. Variable positions shown in grey box above each graph.Error bars represent the 95 \% posterior credibility interval estimated from a beta binomial distribution.Grey dashed lines indicate the potential base ratios assuming six gene copies (i.e. 0:6 corresponds to 0, 2:4 to 0.33, 3:3 to 0.5, 4:2 to 0.66, 5:1 to 0.83 and 6:0 to 1).}
+        \label{SFig:LBR}
   \end{center}
 \end{figure}
 
 \begin{figure}
   \begin{center}
     \includegraphics[width=\textwidth]{base_ratio_ecoli.pdf}
-      \caption[\textit{E. coli} base ratios]{\textit{E. coli} biologically variable position base ratios. Error bars represent the 95 \% posterior credibility interval estimated from a beta binomial distribution. Grey dashed lines indicate the potential base ratios assuming seven gene copies.}
-        \label{Fig:EBR}
+      \caption[\textit{E. coli} base ratios]{Base ratios at eleven biologically variable positions in \textit{E. coli}. Variable positions shown in grey box above each graph. Error bars represent the 95 \% posterior credibility interval estimated from a beta binomial distribution. Grey dashed lines indicate the potential base ratios assuming seven gene copies,  (i.e. 0:7 to 0; 1:6 to 0.14; 2:5 to 0.26; 3:4 to 0.43, 4:3 to 0.57; 5:2 to 0.71; 6:1 to 0.86; and 7:0 to 1 ).}
+        \label{SFig:EBR}
   \end{center}
 \end{figure}
 
 \section{Likely sets of variant combinations}
-Most likely combination of variant strings for ``454'' and Sanger Clone library datasets \cref{Table:ECVC} and \cref{Table:LMVC}).  
+Most likely combination of variant strings for ``454'' and Sanger Clone library datasets (\cref{STable:ECVC} and \cref{STable:LMVC}).
 <<string_summary_ec,echo=FALSE,message=FALSE>>=
 string_table <- read.csv(str_c(stat_data_loc,"string_stats_ecoli.csv", sep = ""), stringsAsFactors = F )
 string_test <- ddply(string_table, .(dataset), summarize, chimera = min(chimera))
@@ -116,10 +117,10 @@ st2ec <- dcast(st2m, dataset*likelihood*chimera~string)
 st2ec$dataset[st2ec$dataset == "Ecoli-Total"] <- "Consensus" 
 @
 <<ec_string_table,results='asis',echo=FALSE>>=
-strCaption <- "\\textbf{Estimated most likely set of variant combinations for \\textit{E. coli}}"
+strCaption <- "\\textbf{Estimated most likely set of variant combinations for \\textit{E. coli}}. See supplemental computation methods for how chimera and likelihood were calculated."
 shortCaption <- "\\textit{E. coli} variant combinations"
 print(xtable(st2ec, 
-             caption=c(strCaption, shortCaption), label="Table:ECVC"), 
+             caption=c(strCaption, shortCaption), label="STable:ECVC"), 
       include.rownames = FALSE,
       caption.placement="top")
 @
@@ -142,17 +143,17 @@ st2lm$dataset[st2lm$dataset == "Lmono-Total"] <- "Consensus"
 @
 
 <<lm_string_table,results='asis',echo=FALSE>>=
-strCaption <- "\\textbf{Estimated most likely set of variant combinations for \\textit{L. monocyotogenes}}"
+strCaption <- "\\textbf{Estimated most likely set of variant combinations for \\textit{L. monocyotogenes}}. See supplemental computation methods for how chimera and likelihood were calculated."
 shortCaption <- "\\textit{L. monocytogenes} variant combinations"
 print(xtable(st2lm, 
-             caption=c(strCaption, shortCaption), label="Table:LMVC"), 
+             caption=c(strCaption, shortCaption), label="STable:LMVC"), 
       include.rownames = FALSE,
       caption.placement="top")
 @
 
 \section{Appendix}
 \subsection*{Full List of False Positive Variants}
-All variants called by the 8 piplines used during the pipeline validation along with the suspected cause of the variant.
+All variants called by the 8 piplines used during the pipeline validation along with the suspected cause of the variant.  The following abbreviations were used in \cref{STable:PCEC,STable:PCLM}:  Org - Organism, Plat - sequencing platform, Rep - replicate, Map - read mapping algorithm, Var - variant calling algorithm, POS - base position relative to the reference, DP - coverage, QUAL - confidence in variant call assigned my variant calling algorithm, MQ - mapping quality score assigned by mapping algorithm, FS - fisher strain bias test statistic, Cause - hypothesized cause of false positive variant call. See supplemental manuscript methods section for mapping algorithm and variant calling algorithm descriptions.
 
 <<vcf_all_variants,echo=FALSE,error=FALSE,warning=FALSE>>=
 read_vcf_table <- function(tsv){
@@ -217,7 +218,7 @@ strCaption <- "\\textbf{\\textit{E. coli} Pipeline Comparison} Characteristics o
 shortCaption <- "\\textit{E. coli} positions pipeline comparison"
 print(xtable(vcf_tables_df[vcf_tables_df$Org == "Ecoli",], 
              digits=2, 
-             caption=c(strCaption, shortCaption), label="Table:PCEC"), 
+             caption=c(strCaption, shortCaption), label="STable:PCEC"), 
       include.rownames = FALSE,
       tabular.environment='longtable', 
       floating = FALSE,
@@ -229,7 +230,7 @@ strCaption <- "\\textbf{\\textit{L. monocytogenes} Positions Pipeline Comparison
 shortCaption <- "\\textit{L. monocytogenes} positions pipeline pomparison"
 print(xtable(vcf_tables_df[vcf_tables_df$Org == "Lmono",], 
              digits=2, 
-             caption=c(strCaption, shortCaption), label="Table:PCLM"),
+             caption=c(strCaption, shortCaption), label="STable:PCLM"),
       include.rownames = FALSE,
       tabular.environment='longtable', 
       floating = FALSE,

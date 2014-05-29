@@ -1,0 +1,118 @@
+BLASTN 2.2.29+
+Reference: Zheng Zhang, Scott Schwartz, Lukas Wagner, and
+Webb Miller (2000), "A greedy algorithm for aligning DNA
+sequences", J Comput Biol 2000; 7(1-2):203-14.
+
+
+RID: KH9SY3U8014
+
+
+Database: Representative Chromosomes
+           2,857 sequences; 5,609,140,793 total letters
+Query= 
+Length=558
+
+
+                                                                   Score     E
+Sequences producing significant alignments:                       (Bits)  Value
+
+ref|NC_000913.3|  Escherichia coli str. K-12 substr. MG1655, c...    979   0.0  
+ref|NC_018658.1|  Escherichia coli O104:H4 str. 2011C-3493 chr...    979   0.0  
+ref|NC_017634.1|  Escherichia coli O83:H1 str. NRG 857C chromo...    979   0.0  
+ref|NC_011751.1|  Escherichia coli UMN026 chromosome, complete...    979   0.0  
+ref|NC_011750.1|  Escherichia coli IAI39 chromosome, complete ...    979   0.0  
+ref|NC_011740.1|  Escherichia fergusonii ATCC 35469 chromosome...    979   0.0  
+ref|NC_007384.1|  Shigella sonnei Ss046 chromosome, complete g...    979   0.0  
+ref|NC_002695.1|  Escherichia coli O157:H7 str. Sakai chromoso...    979   0.0  
+ref|NC_004337.2|  Shigella flexneri 2a str. 301 chromosome, co...    974   0.0  
+ref|NC_007613.1|  Shigella boydii Sb227 chromosome, complete g...    974   0.0  
+
+ALIGNMENTS
+>ref|NC_000913.3| Escherichia coli str. K-12 substr. MG1655, complete genome
+Length=4641652
+
+ Features in this part of subject sequence:
+   rRNA-16S ribosomal RNA of rrnH operon
+
+ Score =   979 bits (530),  Expect = 0.0
+ Identities = 539/543 (99%), Gaps = 2/543 (0%)
+ Strand=Plus/Plus
+
+Query  3       CCTGATGCAGCCATGCCGCGTGTATGAAGAAGGCTTACGGGTTGT-AAGTACGTTTCAGC  61
+               |||||||||||||||||||||||||||||||||| | |||||||| |||||| |||||||
+Sbjct  224155  CCTGATGCAGCCATGCCGCGTGTATGAAGAAGGCCTTCGGGTTGTAAAGTAC-TTTCAGC  224213
+
+Query  62      GGGGAGGAAGGGAGTAAAGTTAATACCTTTGCTCATTGACGTTACCCGCAGAAGAAGCAC  121
+               ||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||
+Sbjct  224214  GGGGAGGAAGGGAGTAAAGTTAATACCTTTGCTCATTGACGTTACCCGCAGAAGAAGCAC  224273
+
+Query  122     CGGCTAACTCCGTGCCAGCAGCCGCGGTAATACGGAGGGTGCAAGCGTTAATCGGAATTA  181
+               ||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||
+Sbjct  224274  CGGCTAACTCCGTGCCAGCAGCCGCGGTAATACGGAGGGTGCAAGCGTTAATCGGAATTA  224333
+
+Query  182     CTGGGCGTAAAGCGCACGCAGGCGGTTTGTTAAGTCAGATGTGAAATCCCCGGGCTCAAC  241
+               ||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||
+Sbjct  224334  CTGGGCGTAAAGCGCACGCAGGCGGTTTGTTAAGTCAGATGTGAAATCCCCGGGCTCAAC  224393
+
+Query  242     CTGGGAACTGCATCTGATACTGGCAAGCTTGAGTCTCGTAGAGGGGGGTAGAATTCCAGG  301
+               ||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||
+Sbjct  224394  CTGGGAACTGCATCTGATACTGGCAAGCTTGAGTCTCGTAGAGGGGGGTAGAATTCCAGG  224453
+
+Query  302     TGTAGCGGTGAAATGCGTAGAGATCTGGAGGAATACCGGTGGCGAAGGCGGCCCCCTGGA  361
+               ||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||
+Sbjct  224454  TGTAGCGGTGAAATGCGTAGAGATCTGGAGGAATACCGGTGGCGAAGGCGGCCCCCTGGA  224513
+
+Query  362     CGAAGACTGACGCTCAGGTGCGAAAGCGTGGGGAGCAAACAGGATTAGATACCCTGGTAG  421
+               ||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||
+Sbjct  224514  CGAAGACTGACGCTCAGGTGCGAAAGCGTGGGGAGCAAACAGGATTAGATACCCTGGTAG  224573
+
+Query  422     TCCACGCCGTAAACGATGTCGACTTGGAGGTTGTGCCCTTGAGGCGTGGCTTCCGGAGCT  481
+               ||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||
+Sbjct  224574  TCCACGCCGTAAACGATGTCGACTTGGAGGTTGTGCCCTTGAGGCGTGGCTTCCGGAGCT  224633
+
+Query  482     AACGCGTTAAGTCGACCGCCTGGGGAGTACGGCCGCAAGGTTAAAACTCAAATGAATTGA  541
+               ||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||
+Sbjct  224634  AACGCGTTAAGTCGACCGCCTGGGGAGTACGGCCGCAAGGTTAAAACTCAAATGAATTGA  224693
+
+Query  542     CGG  544
+               |||
+Sbjct  224694  CGG  224696
+
+
+  Database: Representative Chromosomes
+    Posted date:  Mar 21, 2014  12:17 AM
+  Number of letters in database: 5,609,140,793
+  Number of sequences in database:  2,857
+
+Lambda      K        H
+    1.33    0.621     1.12 
+Gapped
+Lambda      K        H
+    1.28    0.460    0.850 
+Matrix: blastn matrix:1 -2
+Gap Penalties: Existence: 0, Extension: 0
+Number of Sequences: 2857
+Number of Hits to DB: 6177
+Number of extensions: 6
+Number of successful extensions: 6
+Number of sequences better than 10: 1
+Number of HSP's better than 10 without gapping: 0
+Number of HSP's gapped: 3
+Number of HSP's successfully gapped: 3
+Length of query: 558
+Length of database: 5609140793
+Length adjustment: 30
+Effective length of query: 528
+Effective length of database: 5609055083
+Effective search space: 2961581083824
+Effective search space used: 2961581083824
+A: 0
+X1: 13 (25.0 bits)
+X2: 32 (59.1 bits)
+X3: 54 (99.7 bits)
+S1: 13 (25.1 bits)
+S2: 21 (39.9 bits)
+
+
+
+

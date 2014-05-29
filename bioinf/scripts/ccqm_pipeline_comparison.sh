@@ -28,7 +28,7 @@ BIN=../bin #binary directory
 FQDIR=../fastq-data #fastq directory
 
 #java runtime specs 
-JAVA=Xmx2g
+JAVA=Xmx4g
 
 # Functions
 ### Are any of these redundant????
