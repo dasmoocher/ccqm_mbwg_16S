@@ -5,7 +5,24 @@ library(xtable)
 ```
 
 ### merged_base_ratios.csv
-```{r, echo=FALSE, results='hide'}
+```{r, echo=FALSE}
+merged_fastq_stats <- read.csv("merged_fastq_stats.csv")
+Variable <- names(merged_fastq_stats)
+Description <- c("info - informational value, len - length summary statistic",
+                 "type of information value or summary statistic",
+                 "information or summary statistica value",
+                 "source dataset"
+                 )
+mfq_description <- cbind(Variable, Description)
+mfq_descript_table <- xtable(mfq_description)
+```
+
+```{r results='asis', echo=FALSE}
+print.xtable(mfq_descript_table, type = "html")
+```
+
+### merged_base_ratios.csv
+```{r, echo=FALSE}
 merged_base_ratios <- read.csv("merged_base_ratios.csv")
 Variable <- names(merged_base_ratios)
 Description <- c("Reference Base", #Ref
@@ -26,11 +43,10 @@ Description <- c("Reference Base", #Ref
                  )
 mbr_description <- cbind(Variable, Description)
 mbr_descript_table <- xtable(mbr_description)
-mbr_descript_print <- print.xtable(mbr_descript_table, type = "html")
 ```
 
 ```{r results='asis', echo=FALSE}
-mbr_descript_print
+print.xtable(mbr_descript_table, type = "html")
 ```
 
 
@@ -65,11 +81,10 @@ Description <- c("Reference Base", #Ref
                  )
 bt_description <- cbind(Variable, Description)
 bt_descript_table <- xtable(bt_description)
-bt_descript_print <- print.xtable(bt_descript_table, type = "html")
 ```
 
 ```{r results='asis', echo=FALSE}
-bt_descript_print
+print.xtable(bt_descript_table, type = "html")
 ```
 
 ### string_stats[_ecoli | lmono].csv
@@ -88,15 +103,15 @@ Description <- c("Estimated variant combination for gene copy 1",
                  "Dataset used to estimate the set of variant combinations")
 string_stats_description <- cbind(Variable, Description)
 string_stats_descript_table <- xtable(string_stats_description)
-string_stats_descript_print <- print.xtable(string_stats_descript_table, type = "html")
+
 ```
 
 ```{r results='asis', echo=FALSE}
-string_stats_descript_print
+print.xtable(string_stats_descript_table, type = "html")
 ```
 
 
-### string_tables[_filtered].csv
+### string_tables_filtered.csv
 ```{r, echo=FALSE, results='hide'}
 string_tables <- read.csv("string_tables.csv")
 Variable <- names(string_tables)
@@ -105,10 +120,10 @@ Description <- c("Combinations of bases at biologically variable positions",
                  "source sequence dataset")
 string_tables_description <- cbind(Variable, Description)
 string_tables_descript_table <- xtable(string_tables_description)
-string_tables_descript_print <- print.xtable(string_tables_descript_table, type = "html")
+
 ```
 
 ```{r results='asis', echo=FALSE}
-string_tables_descript_print
+print.xtable(string_tables_descript_table, type = "html")
 ```
 
