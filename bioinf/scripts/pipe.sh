@@ -6,11 +6,10 @@
 #
 # Created by: Nate Olson
 #
-# Updated February 20, 2014
+# Updated June 2, 2014
 #
 #####
 
-bash scripts/trace_to_fastq.sh
 bash scripts/sra_to_fastq.sh
 cd results
 bash ../scripts/ccqm_pipeline_comparison.sh \
