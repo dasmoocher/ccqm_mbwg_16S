@@ -1,19 +1,13 @@
-### Directory structure  
-  
-    ccqm_mbwg_16S/    
-        stats/ 
-           data/                   -- data files generated as part of statistical analysis
-           
-        pub/  
-           tables/                 -- Rnw scripts for publication tables
-           supplemental/           -- documents included as supplemental material for publication
-           figures/                -- pdf of publication figures
-           
-        bioinf/
-            bin/                   -- executables for third party software
-            fastq-data/            -- raw sequence data
-            resources/             -- additional input files required to run pipelines
-            results/               -- output from bioinformatic pipelines
-            scripts/               -- scripts written for bioinformatic analysis
-            src/                   -- source code for third party software
-            trace-data/            -- trace data obtained from GenBank
+##Directory for binary files used during the bioinformatics analysis.
+
+Users need to obtain third party software from link listed above and move the required compiled binaries to the *bioinf/bin* directory or create links.
+
+1. AddOrReplaceReadGroups.jar
+2. bcftools
+3. bwa
+4. CreateSequenceDictionary.jar
+5. GenomeAnalysisTK.jar
+6. mothur
+7. prinseq-lite.pl
+8. SortSam.jar
+9. tmap

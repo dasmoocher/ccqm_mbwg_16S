@@ -6,43 +6,17 @@ Scripts and pipelines presented have been run on Mac OSX 10.8 and 10.9 and Ubunt
 
 ### Requirements  
 Unix based operating system is required for a number of the pipeline dependencies.  
-
-#### Third Party Software and Packages
-**Software** see links below for installation procedures  
-
-- sratoolkit [http://www.ncbi.nlm.nih.gov/Traces/sra/?view=software](http://www.ncbi.nlm.nih.gov/Traces/sra/?view=software)  
-- BWA [http://bio-bwa.sourceforge.net/](http://bio-bwa.sourceforge.net/)  
-- TMAP [https://github.com/nh13/TMAP](https://github.com/nh13/TMAP)  
-- Picard [http://picard.sourceforge.net/](http://picard.sourceforge.net/)
-- GATK [http://www.broadinstitute.org/gatk](http://www.broadinstitute.org/gatk) 
-- mothur [http://www.mothur.org/wiki/Download_mothur](http://www.mothur.org/wiki/Download_mothur)
-- prinseq [http://prinseq.sourceforge.net/](http://prinseq.sourceforge.net/)
-
-**Programming languages and Packages**  
-
-* Python  
-  *  biopython  
-* R  
-  * ggplot2  
-  * reshape2  
-  * plyr 
-  * knitr
-  * stringr
-  * dply
-  * gtools
-  * xtable
-* Bash 
   
 ## Procedure for reproducing sequence analysis
 1. Bioinformatics sequence processing
 	*  The complete sequence analysis pipeline can be completed by running the *pipe.sh* script from the command line: `bash scripts\pipe.sh` from within the *ccqm_mbwg_16S/bioinf* directroy. 	 
 
-2. [Statistical data analysis](#sda)
+2. Statistical data analysis
 	* The statistical analysis can be performed by running the *ccqm_16S_stat_pipe.R* from the command line `R CMD BATCH ccqm_16S_stat_pipe.R` from within the *ccqm_mbwg_16S/stat* directory
 	* A script for compiling the *knitr* documents in the *pub* directory is in prep.
 
 ### General Notes
-Directory structure  
+####Directory structure  
   
     ccqm_mbwg_16S/    
         stats/ 
@@ -58,6 +32,27 @@ Directory structure
             scripts/               -- scripts written for bioinformatic analysis
             src/                   -- source code for third party software
             trace-data/            -- trace data obtained from GenBank
+
+####Dependencies
+##### Third Party Software and Packages
+**Software** see links below for installation procedures  
+
+- sratoolkit [http://www.ncbi.nlm.nih.gov/Traces/sra/?view=software](http://www.ncbi.nlm.nih.gov/Traces/sra/?view=software)  
+- BWA [http://bio-bwa.sourceforge.net/](http://bio-bwa.sourceforge.net/)  
+- TMAP [https://github.com/nh13/TMAP](https://github.com/nh13/TMAP)  
+- Picard [http://picard.sourceforge.net/](http://picard.sourceforge.net/)
+- GATK [http://www.broadinstitute.org/gatk](http://www.broadinstitute.org/gatk) 
+- mothur [http://www.mothur.org/wiki/Download_mothur](http://www.mothur.org/wiki/Download_mothur)
+- prinseq [http://prinseq.sourceforge.net/](http://prinseq.sourceforge.net/)
+
+**Programming languages and Packages**  
+
+* Python  
+  *  biopython  
+* R  
+  * ggplot2, reshape2, plyr, knitr, stringr, dply, gtools, xtable
+* Bash 
+
 Users need to obtain third party software from link listed above and move the required compiled binaries to the *bioinf/bin* directory or create links.
 
 1. AddOrReplaceReadGroups.jar
