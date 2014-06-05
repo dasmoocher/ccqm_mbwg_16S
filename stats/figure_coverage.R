@@ -18,6 +18,9 @@ vcf_df <- cbind(vcf_df,
                 colsplit(string = vcf_df$dataset, 
                          pattern= "-", 
                          names = c("org", "plat", "lab","rep")))
+clone_ds <- unique(grep("Sanger-(LGC|NIST)",vcf_df$dataset, value = T))
+vcf_df$plat[vcf_df$dataset %in% clone_ds] <- "Sanger Clone"
+vcf_df$plat <- factor(vcf_df$plat, levels = c("454","ION","Sanger Clone","Sanger"))
 
 ggplot(vcf_df) + 
   geom_path(aes(x = POS, 
@@ -25,7 +28,7 @@ ggplot(vcf_df) +
 		color = lab, 
 		linetype = org, 
 		group = dataset)) + 
-  facet_wrap(~plat) + scale_y_log10() + 
+  facet_wrap(~plat, nrow = 1) + scale_y_log10() + 
   labs(y = "Coverage", x = "Reference Location (bp)", color = "Participants", linetype = "Organisms") +
   theme_bw() +
   theme(legend.position = "bottom", legend.direction = "horizontal")
