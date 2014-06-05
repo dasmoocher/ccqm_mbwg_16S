@@ -1,0 +1,50 @@
+Abundant base ratio power analysis
+========================================================
+### Objective:  
+Perform power analysis to determine the desired coverage for estimating abundant base ratios.
+
+#### Assumptions:  
+* The total gene copy number for _E. coli_ and _L. monocytogenes_ is 7 and 6 respectively.
+* Sequnced bases follow a binomial distribution
+
+```{r}
+library(reshape2)
+library(ggplot2)
+library(stringr)
+library(xtable)
+sessionInfo()
+```
+
+### Simulated data for power analysis
+```{r}
+coverage <- c(1:500,seq(from = 510, to = 10000, by = 10))
+ratio_levels <- c("x6:1","x5:1","x4:3","x3:3")
+power_df <- data.frame(coverage)
+ratios <-c(6/7,5/6,4/7,3/6)
+for(i in 1:4){
+  power_cal <- sqrt((ratios[i]*(1-ratios[i])/coverage))
+  power_df[,ratio_levels[i]] <- power_cal                  
+}
+power_dfm <- melt(power_df, id = "coverage")
+power_dfm$Ratio <- str_replace(power_dfm$variable, "x","")
+```
+
+### Theoretical decay plot assuming a binomial distribution
+```{r fig.width=7, fig.height=6}
+ggplot(power_dfm) + geom_line(aes(x = coverage, y = value, color = Ratio)) + scale_x_log10() + labs(x = "Desired Coverage", y = "Proportion Standard Deviation") + theme_bw()
+```
+
+
+### Power analysis for consensus estimated abundant base ratios
+Desired standard deviation is defined as 1/4 of 1/gene copy number.  This is based on a 95 % confidence interval of +/- 2 x standard deviation  and no overlap between the confidence invervals for the possible abundant base copy ratios, e.g. for _L. monocyotogenes_ 1/6, 2/6, ...6/6.
+```{r}
+pwr <- data.frame(abd_ratio = c("6:1","5:1","4:3","3:3"), ratios, sd = 1/(4*(c(7,6,7,6))))
+pwr$cov <- (pwr$ratios * (1-pwr$ratios))/pwr$sd^2
+colnames(pwr) <- c("Abundant Base Ratios","Abundant Base Proportions","Standard Deviation", "Desired Coverage")                                  
+```
+
+```{r, results='asis', echo=FALSE}
+coverage_table <- xtable(pwr, caption = "Desired coverage for consensus abundant base ratios",
+                         align = c("c","c","c","c","c"), digits = 3)
+print.xtable(coverage_table, type = "html", caption.placement = "top", include.rownames=FALSE)
+```
