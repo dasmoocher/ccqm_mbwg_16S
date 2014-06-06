@@ -126,16 +126,15 @@ print(xtable(st2ec,
 @
 <<string_summary_lm,echo=FALSE,message=FALSE>>=
 string_table <- read.csv(str_c(stat_data_loc,"string_stats_lmono.csv", sep = ""), stringsAsFactors = F )
-#string_test <- ddply(string_table, .(dataset), summarize, likelihood = max(likelihood))
 string_test <- ddply(string_table, .(dataset), summarize, chimera = min(chimera))
 string_test2 <- join(string_test,string_table)
 st2m <- melt(string_test2, id.vars=c("dataset", "likelihood", "chimera"))
-st2m$string[st2m$value == 1] <- "GCG"
-st2m$string[st2m$value == 2] <- "GTG"
-st2m$string[st2m$value == 3] <- "TCG"
-st2m$string[st2m$value == 4] <- "GTA"
-st2m$string[st2m$value == 5] <- "GCA"
-st2m$string[st2m$value == 6] <- "TCA"
+st2m$string[st2m$value == 1] <- "GCA"
+st2m$string[st2m$value == 2] <- "GCG"
+st2m$string[st2m$value == 3] <- "GTA"
+st2m$string[st2m$value == 4] <- "GTG"
+st2m$string[st2m$value == 5] <- "TCA"
+st2m$string[st2m$value == 6] <- "TCG"
 st2m$string[st2m$value == 7] <- "TTA"
 st2m$string[st2m$value == 8] <- "TTG"
 st2lm <- dcast(st2m, dataset*likelihood*chimera~string)

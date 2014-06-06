@@ -20,14 +20,12 @@ base_ratio_df <- cbind(base_ratio_df, colsplit(base_ratio_df$dataset,"-",names=c
 
 % how to add in summary statistics from non-variant call positions
 <<base_ratio_tables_summary,echo=FALSE,error=FALSE,warning=FALSE>>=
-#base_ratio_summary_df <- ddply(base_ratio_df,.(Org,Plat, Lab, Rep, exp_ratio, base_ratio), summarize, Count = length(N), N = median(N), Prob = median(max_prob))
 base_ratio_summary_df <- ddply(base_ratio_df,.(Org,Plat, Lab, Rep, exp_ratio, base_ratio), summarize, Count = length(N), Prob = median(max_prob))
-#base_ratio_summary_df <- arrange(base_ratio_summary_df, Org, Plat, N)
 base_ratio_summary_df <- arrange(base_ratio_summary_df, Org, Plat)
 base_ratio_summary_df <- base_ratio_summary_df[base_ratio_summary_df$exp_ratio != base_ratio_summary_df$base_ratio,]
 #rename exp_ratio to consensus and base_ratio to estimated
 base_ratio_summary_df$Prob <- round(base_ratio_summary_df$Prob,2)
-#base_ratio_summary_df$N <- as.integer(base_ratio_summary_df$N)
+
 base_ratio_summary_df <- rename(base_ratio_summary_df, c("exp_ratio"="Consensus", "base_ratio"="Estimate"))
 @
 
