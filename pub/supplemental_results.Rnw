@@ -152,8 +152,7 @@ print(xtable(st2lm,
 
 \section{Appendix}
 \subsection*{Full List of False Positive Variants}
-All variants called by the 8 piplines used during the pipeline validation along with the suspected cause of the variant.  The following abbreviations were used in \cref{STable:PCEC,STable:PCLM}:  Org - Organism, Plat - sequencing platform, Rep - replicate, Map - read mapping algorithm, Var - variant calling algorithm, POS - base position relative to the reference, DP - coverage, QUAL - confidence in variant call assigned my variant calling algorithm, MQ - mapping quality score assigned by mapping algorithm, FS - fisher strain bias test statistic, Cause - hypothesized cause of false positive variant call. See supplemental manuscript methods section for mapping algorithm and variant calling algorithm descriptions.
-
+All variants called by the 8 piplines used during the pipeline validation along with the suspected cause of the variant.  The following abbreviations were used in \cref{STable:PCEC,STable:PCLM}:  Org - Organism, Plat - sequencing platform, Rep - replicate, Map - read mapping algorithm, Var - variant calling algorithm, POS - base position relative to the reference, DP - coverage, QUAL - confidence in variant call assigned my variant calling algorithm, MQ - mapping quality score assigned by mapping algorithm, FS - fisher strain bias test statistic, Cause - hypothesized cause of false positive variant call. See supplemental manuscript methods section for mapping algorithm and variant calling algorithm descriptions. Note that for the NIST Ion Torrent \textit{L. monocytogenes} dataset at position 792 a variant was called by the UnifiedGenotyper Variant Calling Algorithm when the reads were mapped using both bwa and tmap, but the FS score was only above 60 when the reads were mapped with tmap.  Upon manual inspection of the results we attributed the false positive to a strand bias.  
 <<vcf_all_variants,echo=FALSE,error=FALSE,warning=FALSE>>=
 read_vcf_table <- function(tsv){
   vcf_table <- read.table(str_c(bioinf_data_loc,tsv,sep = ""), header = TRUE)
@@ -181,11 +180,12 @@ vcf_tables_df$Cause[vcf_tables_df$POS %in% 1462:1465 &
 vcf_tables_df$Cause[vcf_tables_df$POS >  1504 & 
                       vcf_tables_df$Org == "Lmono"] <- "End of reference"
 vcf_tables_df$Cause[vcf_tables_df$FS > 60] <- "Strand bias"
+vcf_tables_df$Cause[grepl("Lmono-ION-NIST-1", vcf_tables_df$dataset)  & vcf_tables_df$POS == 792] <- "Strand bias"
 vcf_tables_df$Cause[vcf_tables_df$MQ < 40] <- "Low mapping quality"
 vcf_tables_df$Cause[grepl("Lmono-454-LGC-1", vcf_tables_df$dataset) & 
                       vcf_tables_df$POS %in% c(500:757,924:1502)] <- "Contaminants"
 vcf_tables_df$Cause[grepl("Lmono-454-LGC-2-bwa", vcf_tables_df$dataset) & 
-                      vcf_tables_df$POS %in% c(315,328,1047:1356)] <- "Contaminants"
+                      vcf_tables_df$POS %in% c(315,328,500:757,1047:1356)] <- "Contaminants"
 vcf_tables_df$Cause[vcf_tables_df$dataset == "Lmono-454-NMIA-1-bwa-refine-gatk-Table.tsv" & 
                       vcf_tables_df$POS == 381] <- "End of read"
 vcf_tables_df$Cause[vcf_tables_df$dataset == "Lmono-454-NMIA-1-TMAP-refine-gatk-Table.tsv" & 
@@ -199,16 +199,15 @@ vcf_tables_df$Cause[vcf_tables_df$dataset == "Ecoli-454-LGC-1-TMAP-refine-sam-Ta
 vcf_tables_df$Cause[vcf_tables_df$dataset == "Ecoli-454-LGC-1-bwa-refine-gatk-Table.tsv" & 
                       vcf_tables_df$POS == 959] <- "End of read"
 vcf_tables_df$Cause[vcf_tables_df$dataset == "Ecoli-454-LGC-2-bwa-refine-gatk-Table.tsv" & 
-                      vcf_tables_df$POS == 106] <- "End of read"
-vcf_tables_df$Cause[vcf_tables_df$dataset == "Ecoli-454-LGC-2-bwa-refine-gatk-Table.tsv" & 
                       vcf_tables_df$POS == 959] <- "End of read"
-vcf_tables_df$Cause[vcf_tables_df$dataset == "Ecoli-454-LGC-3-bwa-refine-gatk-Table.tsv" &
-                      vcf_tables_df$POS %in% c(325,348)] <- "End of read"
-vcf_tables_df$Cause[vcf_tables_df$dataset == "Ecoli-454-NMIA-1-TMAP-refine-gatk-Table.tsv" &
-                      vcf_tables_df$POS %in% c(508,509,510,514)] <- "End of read"
+vcf_tables_df$Cause[vcf_tables_df$Org == "Ecoli" & vcf_tables_df$Plat == "454" &
+                      vcf_tables_df$POS %in% c(106, 324,325,348,508,509,510,514)] <- "End of read"
 vcf_tables_df$Cause[vcf_tables_df$dataset == "Ecoli-454-NMIA-1-TMAP-refine-sam-Table.tsv" &
                       vcf_tables_df$POS == 514] <- "End of read"
+vcf_tables_df$Cause[vcf_tables_df$Org == "Lmono" & vcf_tables_df$POS %in% c(354,366,346,347,370)] <- "End of read"
 vcf_tables_df$Cause[vcf_tables_df$Org == "Ecoli" & vcf_tables_df$POS == 417] <- "Homopolymer"
+vcf_tables_df$Cause[vcf_tables_df$Org == "Lmono" & vcf_tables_df$Lab == "NIST" & vcf_tables_df$Plat == "Sanger" & 
+                        vcf_tables_df$POS %in% c(865,867,1504)] <- "End of read"
 vcf_tables_df <- subset(vcf_tables_df, select = c(Org, Plat, Lab, Rep, Map, Var, POS, DP, QUAL, MQ , FS,  Cause))
 @
 
