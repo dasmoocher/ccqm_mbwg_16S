@@ -76,7 +76,7 @@ print(xtable(vcf_consensus_summary,
       caption.placement="top")
 @
 
-  A number of false positive variant calls were due to low sequencing coverage because the targeted sequencing strategy was responsible for false positive variant calls in six of the eight ``454'' datasets, excluding \textbf{NEED TO SPECIFY WHICH ONES}.  For those six datasets, a variant was called at the last position in the gap between the two sequencing regions, bases 940 and 963 relative to reference sequences for \textit{E. coli} and \textit{L. monocytogenes}, respectively.  A 40 bp region that was not part of the targeted sequencing region had significantly lower median coverage than the targeted region (2 X vs. 30,110 X, respectively) for all ``454'' datasets combined (Figures 1 and 2).  \\
+  A number of false positive variant calls were due to low sequencing coverage because the targeted sequencing strategy was responsible for false positive variant calls in six of the eight ``454'' datasets, excluding LGC \textit{E. coli} replicate 2 and \textit{L. monocytogenes} replicate 1.  For those six datasets, a variant was called at the last position in the gap between the two sequencing regions, bases 940 and 963 relative to reference sequences for \textit{E. coli} and \textit{L. monocytogenes}, respectively.  A 40 bp region that was not part of the targeted sequencing region had significantly lower median coverage than the targeted region (2 X vs. 30,110 X, respectively) for all ``454'' datasets combined (Figures 1 and 2).  \\
   
   A number of false postive variants were called due to contaminants.  A low level of containating reads (~150) were present in the LGC \textit{L. monocytogenes} rep 1 dataset.  A BLAST analysis of a representative of these reads indicated that they were from \textit{E. coli} (E value of 0.0), a well known contaminant of molecular biology reagents (\cref{subsec:BLAST}).  
   A number of Escherichia coli strains E value of 0.0.  in LGC Lmono rep 1 454 dataset.  
@@ -89,7 +89,7 @@ To determine the ratio of bases at the biologically variant positions, a novel B
   \begin{center}
     \includegraphics{base_ratio_lmono.pdf}
       \caption[\textit{L. monocytogenes} base ratios]{
-      Base ratios at three biologically variable positions (175, 188 and 419) in \textit{L. monocytogenes}. Variable positions shown in grey box above each graph.Error bars represent the 95 \% posterior credibility interval estimated from a beta binomial distribution.Grey dashed lines indicate the potential base ratios assuming six gene copies (i.e. 0:6 corresponds to 0, 2:4 to 0.33, 3:3 to 0.5, 4:2 to 0.66, 5:1 to 0.83 and 6:0 to 1).}
+      Base ratios at three biologically variable positions (175, 188 and 419) in \textit{L. monocytogenes}. Variable positions shown in grey box above each graph. Error bars represent the 95 \% posterior credibility interval estimated from a beta binomial distribution where α is the major base count + 1 and β is the minor base count + 1.  Resulting upper and lower credibility interval values greater then 1 and less than 0 were set to 1 and 0 respectively.Grey dashed lines indicate the potential base ratios assuming six gene copies (i.e. 0:6 corresponds to 0, 2:4 to 0.33, 3:3 to 0.5, 4:2 to 0.66, 5:1 to 0.83 and 6:0 to 1).}
         \label{SFig:LBR}
   \end{center}
 \end{figure}
@@ -97,7 +97,7 @@ To determine the ratio of bases at the biologically variant positions, a novel B
 \begin{figure}
   \begin{center}
     \includegraphics[width=\textwidth]{base_ratio_ecoli.pdf}
-      \caption[\textit{E. coli} base ratios]{Base ratios at eleven biologically variable positions in \textit{E. coli}. Variable positions shown in grey box above each graph. Error bars represent the 95 \% posterior credibility interval estimated from a beta binomial distribution. Grey dashed lines indicate the potential base ratios assuming seven gene copies,  (i.e. 0:7 to 0; 1:6 to 0.14; 2:5 to 0.26; 3:4 to 0.43, 4:3 to 0.57; 5:2 to 0.71; 6:1 to 0.86; and 7:0 to 1 ).}
+      \caption[\textit{E. coli} base ratios]{Base ratios at eleven biologically variable positions in \textit{E. coli}. Variable positions shown in grey box above each graph. Error bars represent the 95 \% posterior credibility interval estimated from a beta binomial distribution where α is the major base count + 1 and β is the minor base count + 1.  Resulting upper and lower credibility interval values greater then 1 and less than 0 were set to 1 and 0 respectively. Grey dashed lines indicate the potential base ratios assuming seven gene copies,  (i.e. 0:7 to 0; 1:6 to 0.14; 2:5 to 0.26; 3:4 to 0.43, 4:3 to 0.57; 5:2 to 0.71; 6:1 to 0.86; and 7:0 to 1 ).}
         \label{SFig:EBR}
   \end{center}
 \end{figure}
