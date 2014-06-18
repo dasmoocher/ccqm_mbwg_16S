@@ -48,3 +48,26 @@ coverage_table <- xtable(pwr, caption = "Desired coverage for consensus abundant
                          align = c("c","c","c","c","c"), digits = 3)
 print.xtable(coverage_table, type = "html", caption.placement = "top", include.rownames=FALSE)
 ```
+
+### Function from Steve
+```{r}
+pwr<-function(n.copy, prob=.95){
+  p<-(1:(n.copy-1))/n.copy
+  N<-p
+  for(i in 1:length(p)){
+    n<-0;t.prob<-0
+    while(t.prob<prob){
+      n<-n+20
+      t.prob<-pbinom(min(round((p[i]+.5/n.copy)*n),n),n,p[i])-pbinom(max(round((p[i]-.5/n.copy)*n)-1,0),n,p[i])
+    }
+    while(t.prob>prob){
+      n<-n-1
+      t.prob<-pbinom(min(round((p[i]+.5/n.copy)*n),n),n,p[i])-pbinom(max(round((p[i]-.5/n.copy)*n)-1,0),n,p[i])
+    }
+    N[i]<-n+1
+  }
+  names(N)<-paste(1:(n.copy-1),(n.copy-1):1,sep=":")
+  N
+}
+```
+
