@@ -38,20 +38,7 @@ ggplot(power_dfm) + geom_line(aes(x = coverage, y = value, color = Ratio)) + sca
 ### Power analysis for consensus estimated abundant base ratios
 Desired standard deviation is defined as 1/4 of 1/gene copy number.  This is based on a 95 % confidence interval of +/- 2 x standard deviation  and no overlap between the confidence invervals for the possible abundant base copy ratios, e.g. for _L. monocyotogenes_ 1/6, 2/6, ...6/6.
 ```{r}
-pwr <- data.frame(abd_ratio = c("6:1","5:1","4:3","3:3"), ratios, sd = 1/(4*(c(7,6,7,6))))
-pwr$cov <- (pwr$ratios * (1-pwr$ratios))/pwr$sd^2
-colnames(pwr) <- c("Abundant Base Ratios","Abundant Base Proportions","Standard Deviation", "Desired Coverage")                                  
-```
-
-```{r, results='asis', echo=FALSE}
-coverage_table <- xtable(pwr, caption = "Desired coverage for consensus abundant base ratios",
-                         align = c("c","c","c","c","c"), digits = 3)
-print.xtable(coverage_table, type = "html", caption.placement = "top", include.rownames=FALSE)
-```
-
-### Function from Steve
-```{r}
-pwr<-function(n.copy, prob=.95){
+pwr <-function(n.copy,prob=.95){
   p<-(1:(n.copy-1))/n.copy
   N<-p
   for(i in 1:length(p)){
@@ -59,15 +46,27 @@ pwr<-function(n.copy, prob=.95){
     while(t.prob<prob){
       n<-n+20
       t.prob<-pbinom(min(round((p[i]+.5/n.copy)*n),n),n,p[i])-pbinom(max(round((p[i]-.5/n.copy)*n)-1,0),n,p[i])
+      #print(c(n,t.prob))
     }
     while(t.prob>prob){
       n<-n-1
-      t.prob<-pbinom(min(round((p[i]+.5/n.copy)*n),n),n,p[i])-pbinom(max(round((p[i]-.5/n.copy)*n)-1,0),n,p[i])
+      t.prob<-pbinom(min(floor((p[i]+.5/n.copy)*n),n),n,p[i])-pbinom(max(ceiling((p[i]-.5/n.copy)*n)-1,0),n,p[i])
     }
     N[i]<-n+1
   }
   names(N)<-paste(1:(n.copy-1),(n.copy-1):1,sep=":")
   N
 }
+pwr_df <- data.frame()
+for(i in 6:7){
+    cov <- pwr(i)
+    pwr_df <- rbind(pwr_df, data.frame(gene_copies = i, base_ratio = names(cov), coverage = cov))
+}
+colnames(pwr_df) <- c("Gene Copies", "Abundant Base Ratios","Desired Coverage")                                  
 ```
 
+```{r, results='asis', echo=FALSE}
+coverage_table <- xtable(pwr_df, caption = "Desired coverage for consensus abundant base ratios",
+                         align = c("c","c","c","c"), digits = 3)
+print.xtable(coverage_table, type = "html", caption.placement = "top", include.rownames=FALSE)
+```
