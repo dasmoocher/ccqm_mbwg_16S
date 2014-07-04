@@ -33,21 +33,21 @@ Run easy_install biopython
 
 # install depdendencies
 ## tmap
-git clone --recursive https://github.com/nh13/TMAP.git
-cd TMAP sh autogen.sh && ./configure && make
+RUN git clone --recursive https://github.com/nh13/TMAP.git
+RUN cd TMAP sh autogen.sh && ./configure && make
 
 ## bwa
-git clone https://github.com/lh3/bwa.git
-cd bwa && make
+RUN git clone https://github.com/lh3/bwa.git
+RUN cd bwa && make
 
 ## picard
-git clone https://github.com/broadinstitute/picard.git
+RUN git clone https://github.com/broadinstitute/picard.git
 
 ## mothur
-wget http://www.mothur.org/w/images/8/88/Mothur.cen_64.zip
-unzip Mothur.cen_64.zip 
+RUN wget http://www.mothur.org/w/images/8/88/Mothur.cen_64.zip
+RUN unzip Mothur.cen_64.zip 
 
 ## prinseq
-wget http://sourceforge.net/projects/prinseq/files/standalone/prinseq-lite-0.20.4.tar.gz/download
-tar xvf download
+RUN wget http://sourceforge.net/projects/prinseq/files/standalone/prinseq-lite-0.20.4.tar.gz/download
+RUN tar xvf download
 
