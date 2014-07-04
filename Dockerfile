@@ -16,6 +16,7 @@ RUN apt-get install  -y \
     sra-toolkit \
     python-setuptools \
     python-dev \
+    automake \
     wget
     
     
