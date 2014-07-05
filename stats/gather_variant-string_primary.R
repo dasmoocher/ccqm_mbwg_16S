@@ -33,7 +33,7 @@ read_table <- function(filename){
     return(NULL)
   }
   ds <- filename
-  ds <-str_replace(ds, pattern="-bwa-refine.csv", replace="")
+  ds <-str_replace(ds, pattern="-tmap-refine.csv", replace="")
   string_counts$dataset <- ds
   return(string_counts)
 }
@@ -41,7 +41,7 @@ read_table <- function(filename){
 
 #### Generating the variant string count data frame
 setwd(bioinf_data_loc)
-sam_tables <- list.files()[grep("454.*bwa-refine.csv", c(list.files()), value = F)]
+sam_tables <- list.files()[grep("454.*tmap-refine.csv", c(list.files()), value = F)]
 sam_tables <- c(sam_tables, list.files()[grep("*Sanger-Clones.csv", c(list.files()), value = F)])
 string_df <- ldply(sam_tables, failwith(NULL, read_table))
 setwd(script_loc)

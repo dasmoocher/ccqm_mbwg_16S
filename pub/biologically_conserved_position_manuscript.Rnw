@@ -28,7 +28,7 @@ read_vcf_table <- function(tsv){
 }
 
 vcf_tables <- list.files(bioinf_data_loc)
-vcf_tables <- vcf_tables[grep(pattern = "*bwa-refine-sam-Table.tsv",x = vcf_tables)]
+vcf_tables <- vcf_tables[grep(pattern = "*TMAP-refine-sam-Table.tsv",x = vcf_tables)]
 ambigs <- c(6,118,975,979,983,992:996,1011,1395,175,188,419,1492, 1503,1507,1508)
 vcf_tables_df <- ldply(vcf_tables, failwith(NULL, read_vcf_table))
 vcf_tables_df <- vcf_tables_df[!(vcf_tables_df$POS %in% ambigs),]

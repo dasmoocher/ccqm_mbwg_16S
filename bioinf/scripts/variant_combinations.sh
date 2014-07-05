@@ -4,7 +4,7 @@ Ecoli_ref=../resources/Ecoli_16S_consensus.fasta
 Lmono_ref=../resources/Lmono_16S_consensus.fasta
 
 
-for i in *bwa-refine.bam;
+for i in *tmap-refine.bam;
 do
 	if [[ $i == Ecoli* ]]; then
 		f=$Ecoli_ref
