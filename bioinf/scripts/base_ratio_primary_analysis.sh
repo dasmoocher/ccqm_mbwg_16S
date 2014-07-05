@@ -32,7 +32,7 @@ index_reference() {
 index_reference $Ecoli_ref
 index_reference $Lmono_ref
 #for i in *bwa-refine.bam; 
-for i in *TMP-refine.bam;
+for i in *TMAP-refine.bam;
 do
 	if [[ $i == Ecoli* ]]; then
 		f=$Ecoli_ref
