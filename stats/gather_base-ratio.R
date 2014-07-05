@@ -11,12 +11,13 @@ read_table <- function(filename){
   vcf_table <- read.table(filename, 
                           sep="\t", header = TRUE, na.strings = NA)
   ds <-str_replace(filename, pattern="-TMAP-refine-Full-Table.tsv", replace="")
+  ds <-str_replace(ds, pattern="-bwa-refine-Full-Table.tsv", replace="")
   vcf_table$dataset <- ds
   return(vcf_table)
 }
 
 setwd(bioinf_data_loc)
-vcf_tables <- list.files()[grep("*TMAP-refine-Full-Table.tsv", c(list.files()), value = F)]
+vcf_tables <- list.files()[grep("*-refine-Full-Table.tsv", c(list.files()), value = F)]
 vcf_df <- ldply(vcf_tables, failwith(NULL, read_table))
 vcf_df <- cbind(vcf_df, colsplit(vcf_df$BaseCounts, pattern=",", names=c("A","C","G","T")))
 vcf_df$BaseCounts <- NULL

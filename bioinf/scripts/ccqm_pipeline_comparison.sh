@@ -46,11 +46,10 @@ mapping(){
 	
 	prefix2=$(echo $fq | sed 's/.fastq//')
 	#mapping datasets using tmap
-	$BIN/tmap mapall -f $f -r $fq -n 4 -v -u -o 2 stage1 map4 stage2 map2 stage3 mapvsw> $prefix2-TMAP.bam
-	#samtools view -bSh -o $prefix2-TMAP.bam $prefix2-TMAP.sam
-	#mapping datasets using bwa bwasw
-	#$BIN/bwa bwasw -t 4 $f $fq > $prefix2-bwa.sam
-	$BIN/bwa mem -t 4 $f $fq > $prefix2-bwa.sam
+	$BIN/tmap mapall -f $f -r $fq -n 6 -v -u -o 2 stage1 map4 stage2 map2 > $prefix2-TMAP.bam
+
+	#mapping datasets using bwa mem
+	$BIN/bwa mem -t 6 $f $fq > $prefix2-bwa.sam
 	$BIN/tmap samtools view -bSh -o $prefix2-bwa.bam $prefix2-bwa.sam
 }
 
