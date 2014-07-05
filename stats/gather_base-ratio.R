@@ -16,7 +16,7 @@ read_table <- function(filename){
 }
 
 setwd(bioinf_data_loc)
-vcf_tables <- list.files()[grep("*tmap-refine-Full-Table.tsv", c(list.files()), value = F)]
+vcf_tables <- list.files()[grep("*TMAP-refine-Full-Table.tsv", c(list.files()), value = F)]
 vcf_df <- ldply(vcf_tables, failwith(NULL, read_table))
 vcf_df <- cbind(vcf_df, colsplit(vcf_df$BaseCounts, pattern=",", names=c("A","C","G","T")))
 vcf_df$BaseCounts <- NULL
