@@ -64,3 +64,5 @@ RUN tar xvf download
 RUN mv prinseq*/prinseq-lite.pl ccqm_mbwg_16S/bioinf/bin/
 
 
+## Move GATK to directory
+COPY /home/ubuntu/GenomeAnalysisTK.jar ccqm_mbwg_16S/bioinf/bin/
