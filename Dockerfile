@@ -48,7 +48,8 @@ RUN cd bwa && make
 RUN mv bwa/bwa ccqm_mbwg_16S/bioinf/bin/
 
 ## picard
-RUN git clone https://github.com/broadinstitute/picard.git
+RUN wget http://sourceforge.net/projects/picard/files/latest/download?source=files
+RUN tar xvf download
 RUN mv picard*/*jar ccqm_mbwg_16S/bioinf/bin/
 
 ## mothur
