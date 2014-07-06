@@ -20,6 +20,7 @@ RUN apt-get install  -y \
     python-setuptools \
     python-dev \
     automake \
+    autoconf \
     wget
     
     
