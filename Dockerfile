@@ -40,8 +40,8 @@ Run easy_install biopython
 # install depdendencies
 ## tmap
 RUN git clone --recursive https://github.com/nh13/TMAP.git
-RUN cd TMAP && sh autogen.sh && ./configure && make
-RUN mv TMAP/tmap ~/ccqm_mbwg_16S/bin/
+RUN cd TMAP sh autogen.sh && ./configure && make
+RUN mv TMAP/tmap ~/ccqm_mbwg_16S/bioinf/bin/
 
 ## bwa
 RUN git clone https://github.com/lh3/bwa.git
@@ -50,17 +50,17 @@ RUN mv bwa/bwa ~/ccqm_mbwg_16S/bioinf/bin/
 
 ## picard
 RUN git clone https://github.com/broadinstitute/picard.git
-RUN mv picard*/*jar ~/ccqm_mbwg_16S/bin/
+RUN mv picard*/*jar ~/ccqm_mbwg_16S/bioinf/bin/
 
 ## mothur
 RUN wget http://www.mothur.org/w/images/8/88/Mothur.cen_64.zip
 RUN unzip Mothur.cen_64.zip 
-RUN mv mothur ~/ccqm_mbwg_16S/bin/
+RUN mv mothur ~/ccqm_mbwg_16S/bioinf/bin/
 
 
 ## prinseq
 RUN wget http://sourceforge.net/projects/prinseq/files/standalone/prinseq-lite-0.20.4.tar.gz/download
 RUN tar xvf download
-RUN mv prinseq*/prinseq-lite.pl ~/ccqm_mbwg_16S/bin/
+RUN mv prinseq*/prinseq-lite.pl ~/ccqm_mbwg_16S/bioinf/bin/
 
 
