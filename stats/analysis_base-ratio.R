@@ -49,8 +49,7 @@ max_copy <- NULL
 prop <- NULL
 for(i in 1:nrow(vcf_ambigs)){
   y = vcf_ambigs[i,ambigs[as.character(vcf_ambigs$POS[i])][[1]][2]] 
-  n = vcf_ambigs[i,ambigs[as.character(vcf_ambigs$POS[i])][[1]][2]] +
-    vcf_ambigs[i,ambigs[as.character(vcf_ambigs$POS[i])][[1]][1]] 
+  n = sum(vcf_ambigs[i, c("A","C","G","T")])
   Y = c(Y,y)
   N = c(N,n)
   if(grepl("Ecoli*", vcf_ambigs$dataset[i])){
