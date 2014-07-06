@@ -41,7 +41,7 @@ Run easy_install biopython
 ## tmap
 RUN git clone --recursive https://github.com/nh13/TMAP.git
 RUN cd TMAP && sh autogen.sh && ./configure && make
-RUN mv TMAP/tmap ~/ccqm_mbwg_16S/bioinf/bin/
+RUN mv TMAP/tmap bioinf/bin/
 
 ## bwa
 RUN git clone https://github.com/lh3/bwa.git
