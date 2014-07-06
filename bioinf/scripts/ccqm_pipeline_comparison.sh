@@ -31,7 +31,6 @@ FQDIR=../fastq-data #fastq directory
 JAVA=Xmx4g
 
 # Functions
-### Are any of these redundant????
 index_reference() {
 	$BIN/tmap index -f $1
 	$BIN/tmap samtools faidx $1
