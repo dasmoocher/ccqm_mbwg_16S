@@ -4,9 +4,6 @@ FROM ubuntu:14.04
 # Dockerfile for ccqm_mbwg_16 dependencies
 MAINTAINER NateOlson
 
-# Adding ccqm_mbwg as volume
-ADD /home/ubuntu/ccqm_mbwg_16S /
-
 # install of basic dependencies
 RUN apt-get update
 
@@ -24,6 +21,8 @@ RUN apt-get install  -y \
     autogen \
     wget
     
+# adding the ccqm 16S repository
+RUN git clone https://github.com/nate-d-olson/ccqm_mbwg_16S.git
     
 
 # install R packages
