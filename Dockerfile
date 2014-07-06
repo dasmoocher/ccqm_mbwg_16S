@@ -49,7 +49,7 @@ RUN mv bwa/bwa ccqm_mbwg_16S/bioinf/bin/
 
 ## picard
 RUN wget http://sourceforge.net/projects/picard/files/latest/download?source=files
-RUN unzip download
+RUN unzip download*
 RUN mv picard*/*jar ccqm_mbwg_16S/bioinf/bin/
 
 ## mothur
