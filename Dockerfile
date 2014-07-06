@@ -21,6 +21,7 @@ RUN apt-get install  -y \
     python-dev \
     automake \
     autoconf \
+    autogen \
     wget
     
     
