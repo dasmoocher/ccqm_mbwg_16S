@@ -19,6 +19,8 @@ RUN apt-get install  -y \
     automake \
     autoconf \
     autogen \
+    default-jre \
+    default-jdk \
     wget
     
 # adding the ccqm 16S repository
