@@ -4,6 +4,9 @@ FROM ubuntu:14.04
 # Dockerfile for ccqm_mbwg_16 dependencies
 MAINTAINER NateOlson
 
+# Adding ccqm_mbwg as volume
+VOLUME ~/ccqm_mbwg_16S
+
 # install of basic dependencies
 RUN apt-get update
 
@@ -36,19 +39,26 @@ Run easy_install biopython
 ## tmap
 RUN git clone --recursive https://github.com/nh13/TMAP.git
 RUN cd TMAP sh autogen.sh && ./configure && make
+RUN mv TMAP/tmap ~/ccqm_mbwg_16S/bin/
 
 ## bwa
 RUN git clone https://github.com/lh3/bwa.git
 RUN cd bwa && make
+RUN mv bwa/bwa ~/ccqm_mbwg_16S/bioinf/bin/
 
 ## picard
 RUN git clone https://github.com/broadinstitute/picard.git
+RUN mv picard*/*jar ~/ccqm_mbwg_16S/bin/
 
 ## mothur
 RUN wget http://www.mothur.org/w/images/8/88/Mothur.cen_64.zip
 RUN unzip Mothur.cen_64.zip 
+RUN mv mothur ~/ccqm_mbwg_16S/bin/
+
 
 ## prinseq
 RUN wget http://sourceforge.net/projects/prinseq/files/standalone/prinseq-lite-0.20.4.tar.gz/download
 RUN tar xvf download
+RUN mv prinseq*/prinseq-lite.pl ~/ccqm_mbwg_16S/bin/
+
 
