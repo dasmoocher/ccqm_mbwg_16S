@@ -5,7 +5,7 @@ FROM ubuntu:14.04
 MAINTAINER NateOlson
 
 # Adding ccqm_mbwg as volume
-ADD /home/ubuntu/ccqm_mbwg_16S /
+ADD /home/ubuntu/ccqm_mbwg_16S ./
 
 # install of basic dependencies
 RUN apt-get update
