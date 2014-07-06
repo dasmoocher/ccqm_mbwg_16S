@@ -40,7 +40,7 @@ Run easy_install biopython
 # install depdendencies
 ## tmap
 RUN git clone --recursive https://github.com/nh13/TMAP.git
-RUN cd TMAP sh autogen.sh && ./configure && make
+RUN cd TMAP && sh autogen.sh && ./configure && make
 RUN mv TMAP/tmap ~/ccqm_mbwg_16S/bioinf/bin/
 
 ## bwa
