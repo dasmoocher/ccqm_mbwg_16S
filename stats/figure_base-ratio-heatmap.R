@@ -22,14 +22,27 @@ base_ratio_df <- cbind(base_ratio_df,
                                 pattern = ":",names = c("major","minor")))
 label_df <- base_ratio_df[base_ratio_df$max_prob < 0.95 & !is.na(base_ratio_df$max_prob),]
 label_df$max_prob <- round(label_df$max_prob, digits = 2)
-ggplot(base_ratio_df) + 
-    geom_raster(aes(x = as.factor(POS),y = ds2, fill = as.factor(major))) + 
-    geom_text(data = label_df,
+
+ggplot(base_ratio_df[base_ratio_df$Org == "E. coli",]) +  
+    geom_raster(aes(x = as.factor(POS),y = ds2, fill = base_ratio)) + 
+    geom_text(data = label_df[label_df$Org == "E. coli",],
               aes(x = as.factor(POS),y = ds2, label = max_prob)) +
-    facet_grid(class~Org, scale = "free", space = "free") +
-    labs(x = "Location", y = "Dataset", fill = "Major Base\nCount") +
+    facet_grid(class~., scale = "free", space = "free") +
+    labs(x = "Location", y = "Dataset", fill = "Base Ratio") +
     theme_bw() +
     theme(strip.text.x = element_text(size = 12, face = "italic"),
           strip.text.y = element_blank(),
           strip.background = element_blank())
-ggsave("base_ratio_heatmap.png")
+ggsave(str_c(figure_loc,"ecoli_base_ratio_heatmap.png", sep = ""), height = 4, width=7)
+
+ggplot(base_ratio_df[base_ratio_df$Org == "L. monocytogenes",]) + 
+    geom_raster(aes(x = as.factor(POS),y = ds2, fill = base_ratio)) + 
+    geom_text(data = label_df[label_df$Org == "L. monocytogenes",],
+              aes(x = as.factor(POS),y = ds2, label = max_prob)) +
+    facet_grid(class~., scale = "free", space = "free") +
+    labs(x = "Location", y = "Dataset", fill = "Base Ratio") +
+    theme_bw() +
+    theme(strip.text.x = element_text(size = 12, face = "italic"),
+          strip.text.y = element_blank(),
+          strip.background = element_blank())
+ggsave(str_c(figure_loc,"lmono_base_ratio_heatmap.png", sep = ""), height = 4, width=4)

@@ -87,7 +87,7 @@ To determine the ratio of bases at the biologically variant positions, a novel B
 
 \begin{figure}
   \begin{center}
-    \includegraphics{base_ratio_lmono.pdf}
+    \includegraphics[width=\textwidth]{base_ratio_lmono.png}
       \caption[\textit{L. monocytogenes} base ratios]{
       Base ratios at three biologically variable positions (175, 188 and 419) in \textit{L. monocytogenes}. Variable positions shown in grey box above each graph. Error bars represent the 95 \% posterior credibility interval estimated from a beta binomial distribution where α is the major base count + 1 and β is the minor base count + 1.  One sided credibile intervals were calcualted for prior probabilities of 0 and 1. Grey dashed lines indicate the potential base ratios assuming six gene copies (i.e. 0:6 corresponds to 0, 2:4 to 0.33, 3:3 to 0.5, 4:2 to 0.66, 5:1 to 0.83 and 6:0 to 1).}
         \label{SFig:LBR}
@@ -96,7 +96,7 @@ To determine the ratio of bases at the biologically variant positions, a novel B
 
 \begin{figure}
   \begin{center}
-    \includegraphics[width=\textwidth]{base_ratio_ecoli.pdf}
+    \includegraphics[width=\textwidth]{base_ratio_ecoli.png}
       \caption[\textit{E. coli} base ratios]{Base ratios at eleven biologically variable positions in \textit{E. coli}. Variable positions shown in grey box above each graph. Error bars represent the 95 \% posterior credibility interval estimated from a beta binomial distribution where α is the major base count + 1 and β is the minor base count + 1.  One sided credibile intervals were calcualted for prior probabilities of 0 and 1. Grey dashed lines indicate the potential base ratios assuming seven gene copies,  (i.e. 0:7 to 0; 1:6 to 0.14; 2:5 to 0.26; 3:4 to 0.43, 4:3 to 0.57; 5:2 to 0.71; 6:1 to 0.86; and 7:0 to 1 ).}
         \label{SFig:EBR}
   \end{center}
@@ -189,7 +189,7 @@ vcf_tables_df$Cause[grepl("Lmono-454-LGC-2-bwa", vcf_tables_df$dataset) &
 vcf_tables_df$Cause[vcf_tables_df$dataset == "Lmono-454-NMIA-1-bwa-refine-gatk-Table.tsv" & 
                       vcf_tables_df$POS == 381] <- "End of read"
 vcf_tables_df$Cause[vcf_tables_df$dataset == "Lmono-454-NMIA-1-TMAP-refine-gatk-Table.tsv" & 
-                      vcf_tables_df$POS == 533] <- "End of read"
+                      vcf_tables_df$POS %in% c(533:535)] <- "End of read"
 vcf_tables_df$Cause[vcf_tables_df$dataset == "Lmono-Sanger-LGC-1-bwa-refine-sam-Table.tsv" & 
                       vcf_tables_df$POS %in% c(390, 1409)] <- "End of read"
 vcf_tables_df$Cause[vcf_tables_df$dataset == "Ecoli-454-LGC-1-bwa-refine-sam-Table.tsv" & 
@@ -238,5 +238,5 @@ print(xtable(vcf_tables_df[vcf_tables_df$Org == "Lmono",],
 \subsection*{Contaminants - BLAST results}
 \label{subsec:BLAST}
 BLAST reports for representative sequences of reads responsible for false positive variant calls in the LGC \textit{L. monocytogenes} ``454'' rep 1 dataset.
-\verbatiminput{Lmono-contaminant-blast-region2.txt}
+\verbatiminput{supplemental/Lmono-contaminant-blast-region2.txt}
 \end{document}

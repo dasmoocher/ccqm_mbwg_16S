@@ -60,7 +60,7 @@ ggplot(vcf_ambigs[vcf_ambigs$org == "lmono",]) +
     theme_bw() + 
     theme(legend.position = "none") +
     labs(y = "Abundant Base Ratio", x = "Dataset", color = "Dataset")
-ggsave(str_c(figure_loc,"base_ratio_lmono.pdf", sep = ""), height = 8, width=6)
+ggsave(str_c(figure_loc,"base_ratio_lmono.png", sep = ""), height = 8, width=6)
 
 ggplot(vcf_ambigs[vcf_ambigs$org == "ecoli",]) + 
     geom_point(aes(x = dataset, y = prop, color = dataset)) + 
@@ -78,4 +78,4 @@ ggplot(vcf_ambigs[vcf_ambigs$org == "ecoli",]) +
     theme(legend.position = "bottom", legend.direction = "horizontal",
           axis.text.x = element_blank()) +
     labs(y = "Abundant Base Ratio", x = "Dataset", color = "Dataset")
-ggsave(str_c(figure_loc,"base_ratio_ecoli.pdf", sep = ""), height = 8, width=8)
+ggsave(str_c(figure_loc,"base_ratio_ecoli.png", sep = ""), height = 8, width=8)

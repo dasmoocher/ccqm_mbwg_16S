@@ -10,8 +10,8 @@ read_table <- function(filename){
   print(filename)
   vcf_table <- read.table(filename, 
                           sep="\t", header = TRUE, na.strings = NA)
-  ds <-str_replace(filename, pattern="-TMAP-Full-Table.tsv", replace="")
-  ds <-str_replace(ds, pattern="-bwa-Full-Table.tsv", replace="")
+  ds <-str_replace(filename, pattern="-TMAP-refine-Full-Table.tsv", replace="")
+  ds <-str_replace(ds, pattern="-bwa-refine-Full-Table.tsv", replace="")
   vcf_table$dataset <- ds
   return(vcf_table)
 }
