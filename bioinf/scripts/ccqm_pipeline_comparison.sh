@@ -28,7 +28,7 @@ BIN=../bin #binary directory
 FQDIR=../fastq-data #fastq directory
 
 #java runtime specs 
-JAVA=Xmx4g
+JAVA=Xmx8g
 
 # Functions
 index_reference() {

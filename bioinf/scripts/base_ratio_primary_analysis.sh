@@ -18,7 +18,7 @@ set -v
 BIN=../bin #binary directory
 
 #java runtime specs 
-JAVA=Xmx4g
+JAVA=Xmx8g
 
 # reference files
 Ecoli_ref=../resources/Ecoli_16S_consensus_no_ambigs.fasta
@@ -32,7 +32,7 @@ index_reference() {
 index_reference $Ecoli_ref
 index_reference $Lmono_ref
 
-for i in *454*TMAP-refine.bam *ION*TMAP.bam *Sanger*bwa.bam;
+for i in *454*TMAP-refine.bam *ION*TMAP-refine.bam *Sanger*bwa.bam;
 do
 	if [[ $i == Ecoli* ]]; then
 		f=$Ecoli_ref
