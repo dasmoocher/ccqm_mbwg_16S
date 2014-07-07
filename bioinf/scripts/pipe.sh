@@ -14,8 +14,8 @@ bash scripts/sra_to_fastq.sh
 cd results
 bash ../scripts/ccqm_pipeline_comparison.sh \
 	../resources/metadata.csv \
-	../resources/Lmono_16S_consensus.fasta \
-	../resources/Ecoli_16S_consensus.fasta
+	../resources/Lmono_16S_consensus_no_ambigs.fasta \
+	../resources/Ecoli_16S_consensus_no_ambigs.fasta
 bash ../scripts/fastq_stats.sh
 bash ../scripts/pipeline_comparison_tables.sh
 bash ../scripts/base_ratio_primary_analysis.sh

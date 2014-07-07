@@ -12,7 +12,7 @@
 ####
 
 set -v
-SRA_SRC=src/sratoolkit.2.3.5-2-ubuntu64/bin
+SRA_SRC=src/sratoolkit*/bin
 
 # accession numbers for next generation sequencing datasets generated 
 # as part of the 2013 CCQM MBSG 16S rRNA interlaboratory study

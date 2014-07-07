@@ -32,7 +32,7 @@ index_reference() {
 index_reference $Ecoli_ref
 index_reference $Lmono_ref
 
-for i in *454*TMAP-refine.bam *ION*TMAP-refine.bam *Sanger*bwa-refine.bam;
+for i in *454*TMAP-refine.bam *ION*TMAP.bam *Sanger*bwa.bam;
 do
 	if [[ $i == Ecoli* ]]; then
 		f=$Ecoli_ref
@@ -41,6 +41,7 @@ do
 	fi
 	prefix=$(echo $i | sed 's/.bam//')
 	echo $prefix $f
+	$BIN/tmap samtools index $i
 	java -$JAVA -jar $BIN/GenomeAnalysisTK.jar -T UnifiedGenotyper \
 		-I $i \
 		-R $f \
