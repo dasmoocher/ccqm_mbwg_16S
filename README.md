@@ -13,7 +13,7 @@ Unix based operating system is required for a number of the pipeline dependencie
 
 2. Statistical data analysis
 	* The statistical analysis can be performed by running the *ccqm_16S_stat_pipe.R* from the command line `R CMD BATCH ccqm_16S_stat_pipe.R` from within the *ccqm_mbwg_16S/stat* directory
-	* A script for compiling the *knitr* documents in the *pub* directory is in prep.
+	* Compile Rnw files using knitr.
 
 ### General Notes
 ####Directory structure  
