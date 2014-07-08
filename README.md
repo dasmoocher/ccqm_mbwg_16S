@@ -8,12 +8,7 @@ Scripts and pipelines presented have been run on Mac OSX 10.8 and 10.9 and Ubunt
 Unix based operating system is required for a number of the pipeline dependencies.  
   
 ## Procedure for reproducing sequence analysis
-1. Bioinformatics sequence processing
-	*  The complete sequence analysis pipeline can be completed by running the *pipe.sh* script from the command line: `bash scripts\pipe.sh` from within the *ccqm_mbwg_16S/bioinf* directroy. 	 
-
-2. Statistical data analysis
-	* The statistical analysis can be performed by running the *ccqm_16S_stat_pipe.R* from the command line `R CMD BATCH ccqm_16S_stat_pipe.R` from within the *ccqm_mbwg_16S/stat* directory
-	* Compile Rnw files using knitr.
+From the `ccqm_mbwg_16S` execute the command `bash pipe.sh`, then compile the Rnw files using knitr.
 
 ### General Notes
 ####Directory structure  
