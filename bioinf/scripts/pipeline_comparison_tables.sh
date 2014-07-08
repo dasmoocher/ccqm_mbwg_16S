@@ -21,8 +21,8 @@ BIN=../bin #binary directory
 JAVA=Xmx8g
 
 # reference files
-Ecoli_ref=../resources/Ecoli_16S_consensus_no_ambigs.fasta
-Lmono_ref=../resources/Lmono_16S_consensus_no_ambigs.fasta
+Ecoli_ref=../resources/Ecoli_16S_consensus_N.fasta
+Lmono_ref=../resources/Lmono_16S_consensus_N.fasta
 
 for i in *vcf;
 do
