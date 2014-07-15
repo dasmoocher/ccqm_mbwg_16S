@@ -13,13 +13,13 @@
 cd bioinf
 bash scripts/sra_to_fastq.sh
 cd results
-bash ../scripts/ccqm_pipeline_comparison.sh \
+bash ../scripts/pipeline_comparison.sh \
 	../resources/metadata.csv \
 	../resources/Lmono_16S_consensus_N.fasta \
 	../resources/Ecoli_16S_consensus_N.fasta
 bash ../scripts/fastq_stats.sh
 bash ../scripts/pipeline_comparison_tables.sh
-bash ../scripts/base_ratio_primary_analysis.sh
+bash ../scripts/variant_ratio_primary_analysis.sh
 bash ../scripts/variant_combinations.sh
 cd ../../stats
-R CMD BATCH ccqm_stat_pipe.R
+R CMD BATCH stat_pipe.R
