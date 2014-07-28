@@ -59,7 +59,7 @@ ggplot(vcf_ambigs[vcf_ambigs$org == "lmono",]) +
     geom_hline(aes(yintercept = 1), linetype = 2, alpha = 0.5) +
     theme_bw() + 
     theme(legend.position = "none") +
-    labs(y = "Abundant Base Ratio", x = "Dataset", color = "Dataset")
+    labs(y = "Variant Read Ratio", x = "Dataset", color = "Dataset")
 ggsave(str_c(figure_loc,"base_ratio_lmono.png", sep = ""), height = 8, width=6)
 
 ggplot(vcf_ambigs[vcf_ambigs$org == "ecoli",]) + 
@@ -77,5 +77,5 @@ ggplot(vcf_ambigs[vcf_ambigs$org == "ecoli",]) +
     theme_bw() + 
     theme(legend.position = "bottom", legend.direction = "horizontal",
           axis.text.x = element_blank()) +
-    labs(y = "Abundant Base Ratio", x = "Dataset", color = "Dataset")
+    labs(y = "Variant Read Ratio", x = "Dataset", color = "Dataset")
 ggsave(str_c(figure_loc,"base_ratio_ecoli.png", sep = ""), height = 8, width=8)

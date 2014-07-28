@@ -77,16 +77,16 @@ print(xtable(vcf_consensus_summary,
 @
 
   
-  All variant calls for the biologically conserved positions were evaluated for being potential false positives \cref{STable:PCEC,STable:PCLM}. The potential variants identified by the eight variant calling pipelines were analyzed for potential reasons for a false positive variant call.  The Fisher Strand bias statistic was used to classify false positive variants due to strand bias (FS < 60).  Variants present in non-target regions and at the end of the reference sequence were identified based on positions relative to the reference.  False positive variants due to homopolymer systemic sequencing errors and a high proportion of bases covering the identified variant position were identifed by visually inspecting the mapping file. Additionally, the contaminant reads were first identified when upon visual inspection of the mapping files revealed a small proportion to highly similar reads that were responsible for a number of variant calls.  Note that for the NIST Ion Torrent \textit{L. monocytogenes} dataset at position 792 a variant was called by the UnifiedGenotyper Variant Calling Algorithm when the reads were mapped using both bwa and tmap, but the FS score was only above 60 when the reads were mapped with tmap.  Upon manual inspection of the results we attributed the false positive to a strand bias.  
+  All variant calls for the biologically conserved positions were evaluated for being potential false positives (\cref{STable:PCEC,STable:PCLM}). The potential variants identified by the eight variant calling pipelines were analyzed for potential reasons for a false positive variant call.  The Fisher Strand bias statistic was used to classify false positive variants due to strand bias (FS < 60).  Variants present in non-target regions and at the end of the reference sequence were identified based on positions relative to the reference.  False positive variants due to homopolymer systemic sequencing errors and a high proportion of bases covering the identified variant position were identifed by visually inspecting the mapping file. Visual inspection of the mapping files revealed a small proportion of highly similar reads that were responsible for a number of variant calls, comparison to the Genbank database using BLAST (Supplemental Results Appendix - BLAST Results) indicated the reads were the product of \textit{E. coli} contamination in the \textit{L. monocytogenes} LGC ``454'' dataset.  Note that for the NIST Ion Torrent \textit{L. monocytogenes} dataset at position 792 a variant was called by the UnifiedGenotyper Variant Calling Algorithm when the reads were mapped using both BWA and TMAP, but the FS score was only above 60 when the reads were mapped with tmap.  Upon manual inspection of the results we attributed the false positive to a strand bias.  
 
 \section{Biologically Variable Positions}
-To determine the variant copy ratios, a novel Bayesian analysis based on binomial sampling theory was developed (Supplemental Computational Methods).  According to the binomial distribution, the observed variant ratios, while precise (due to high coverage), differed significantly from all potential variant copy ratios.  Subsequently given, the observed variant copy ratios, a Bayesian approach was used to identify the most probable variant copy ratio out of the possible ratios assuming \textit{E. coli} and \textit{L. monocytogenes} have seven and six 16S gene copies respectively (\cref{SFig:LBR,SFig:EBR}).  
+To determine the variant copy ratios, a novel Bayesian analysis based on binomial sampling theory was developed (Supplemental Computational Methods).  According to the binomial distribution, the observed variant ratios, while precise (due to high coverage), differed significantly from all potential variant copy ratios.  A Bayesian approach was used to identify the most probable variant copy ratio out of the possible ratios assuming \textit{E. coli} and \textit{L. monocytogenes} have seven and six 16S gene copies respectively (\cref{SFig:LBR,SFig:EBR}).  
 
 \begin{figure}
   \begin{center}
-    \includegraphics[width=\textwidth]{base_ratio_lmono.png}
+    \includegraphics[width=6in]{base_ratio_lmono.png}
       \caption[\textit{L. monocytogenes} variant copy ratios]{
-      Variant copy ratios at three biologically variable positions (175, 188 and 419) in \textit{L. monocytogenes}. Variable positions shown in grey box above each graph. Error bars represent the 95 \% posterior credibility interval estimated from a beta binomial distribution where α is the major variant count + 1 and β is the minor variant count + 1.  One sided credibile intervals were calcualted for prior probabilities of 0 and 1. Grey dashed lines indicate the potential varinat copy ratios assuming six gene copies (i.e. 0:6 corresponds to 0, 2:4 to 0.33, 3:3 to 0.5, 4:2 to 0.66, 5:1 to 0.83 and 6:0 to 1).}
+      Variant copy ratios at three biologically variable positions (175, 188 and 419) in \textit{L. monocytogenes}. Variable positions shown in grey box above each graph. Error bars represent the 95 \% posterior credibility interval estimated from a beta binomial distribution where $\alpha$ is the major variant count + 1 and $\beta$ is the minor variant count + 1.  One sided credibile intervals were calcualted for prior probabilities of 0 and 1. Grey dashed lines indicate the potential varinat copy ratios assuming six gene copies (i.e. 0:6 corresponds to 0, 2:4 to 0.33, 3:3 to 0.5, 4:2 to 0.66, 5:1 to 0.83 and 6:0 to 1).}
         \label{SFig:LBR}
   \end{center}
 \end{figure}
@@ -94,7 +94,7 @@ To determine the variant copy ratios, a novel Bayesian analysis based on binomia
 \begin{figure}
   \begin{center}
     \includegraphics[width=\textwidth]{base_ratio_ecoli.png}
-      \caption[\textit{E. coli} variant copy ratios]{Variant copy ratios at eleven biologically variable positions in \textit{E. coli}. Variable positions shown in grey box above each graph. Error bars represent the 95 \% posterior credibility interval estimated from a beta binomial distribution where α is the major variant count + 1 and β is the minor variant count + 1.  One sided credibile intervals were calcualted for prior probabilities of 0 and 1. Grey dashed lines indicate the potential variant ratios assuming seven gene copies,  (i.e. 0:7 to 0; 1:6 to 0.14; 2:5 to 0.26; 3:4 to 0.43, 4:3 to 0.57; 5:2 to 0.71; 6:1 to 0.86; and 7:0 to 1 ).}
+      \caption[\textit{E. coli} variant copy ratios]{Variant copy ratios at eleven biologically variable positions in \textit{E. coli}. Variable positions shown in grey box above each graph. Error bars represent the 95 \% posterior credibility interval estimated from a beta binomial distribution where $\alpha$ is the major variant count + 1 and $\beta$ is the minor variant count + 1.  One sided credibile intervals were calcualted for prior probabilities of 0 and 1. Grey dashed lines indicate the potential variant ratios assuming seven gene copies,  (i.e. 0:7 to 0; 1:6 to 0.14; 2:5 to 0.26; 3:4 to 0.43, 4:3 to 0.57; 5:2 to 0.71; 6:1 to 0.86; and 7:0 to 1 ).}
         \label{SFig:EBR}
   \end{center}
 \end{figure}
@@ -149,7 +149,7 @@ print(xtable(st2lm,
 
 \section{Appendix}
 \subsection*{Full List of False Positive Variants}
-All variants called by the 8 piplines used during the pipeline validation along with the suspected cause of the variant.  The following abbreviations were used in \cref{STable:PCEC,STable:PCLM}:  Org - Organism, Plat - sequencing platform, Rep - replicate, Map - read mapping algorithm, Var - variant calling algorithm, POS - base position relative to the reference, DP - coverage, QUAL - confidence in variant call assigned my variant calling algorithm, MQ - mapping quality score assigned by mapping algorithm, FS - fisher strain bias test statistic, Cause - hypothesized cause of false positive variant call. See supplemental manuscript methods section for mapping algorithm and variant calling algorithm descriptions. 
+All variants called by the piplines used during the pipeline validation along with the suspected caus of the variant determined by manual investigation (see Biologically Conserved Positions Section above).  The following abbreviations were used in \cref{STable:PCEC,STable:PCLM}:  Org - Organism, Plat - sequencing platform, Rep - replicate, Map - read mapping algorithm, Var - variant calling algorithm, POS - base position relative to the reference, DP - coverage, QUAL - confidence in variant call assigned my variant calling algorithm, MQ - mapping quality score assigned by mapping algorithm, FS - fisher strain bias test statistic, Cause - hypothesized cause of false positive variant call. See supplemental manuscript methods section for mapping algorithm and variant calling algorithm descriptions. 
     
 <<vcf_all_variants,echo=FALSE,error=FALSE,warning=FALSE>>=
 read_vcf_table <- function(tsv){
@@ -207,6 +207,11 @@ vcf_tables_df$Cause[vcf_tables_df$Org == "Ecoli" & vcf_tables_df$POS == 417] <- 
 vcf_tables_df$Cause[vcf_tables_df$Org == "Lmono" & vcf_tables_df$Lab == "NIST" & vcf_tables_df$Plat == "Sanger" & 
                         vcf_tables_df$POS %in% c(865,867,1504)] <- "End of read"
 vcf_tables_df <- subset(vcf_tables_df, select = c(Org, Plat, Lab, Rep, Map, Var, POS, DP, QUAL, MQ , FS,  Cause))
+
+vcf_tables_df$Map[vcf_tables_df$Map == "bwa"] <- "BWA"
+vcf_tables_df$Var[vcf_tables_df$Var == "sam"] <- "SAMtools"
+vcf_tables_df$Var[vcf_tables_df$Var == "gatk"] <- "GATK"
+
 @
 
 <<ec_vcf_table,results='asis',echo=FALSE>>=

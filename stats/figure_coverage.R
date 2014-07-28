@@ -34,4 +34,5 @@ ggplot(vcf_df) +
   theme(legend.position = "bottom", legend.direction = "horizontal")
 
 
-ggsave(filename = str_c(figure_loc,"coverage.pdf", sep = "") ,width = 6, height = 4)
+ggsave(filename = str_c(figure_loc,"coverage.png", sep = "") ,width = 7, height = 4)
+ggsave(filename = str_c(figure_loc,"coverage.tiff", sep = ""), dpi = 600, width = 7, height = 4)

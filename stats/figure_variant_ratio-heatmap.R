@@ -40,3 +40,4 @@ ggplot(base_ratio_df) +
           #strip.text.y = element_blank(),
           strip.background = element_blank(), legend.position = "bottom",legend.direction = "horizontal")
 ggsave(str_c(figure_loc,"variant_copy_ratio_heatmap.png", sep = ""), height = 4, width=8)
+ggsave(str_c(figure_loc,"variant_copy_ratio_heatmap.tiff", sep = ""),dpi = 600, height = 4, width=8)
