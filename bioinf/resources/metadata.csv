@@ -8,9 +8,9 @@ Ecoli-ATCC-sanger.fastq,Ecoli,ATCC,1,Sanger
 Ecoli-ISP-sanger.fastq,Ecoli,ISP,1,Sanger
 Ecoli-LGC-sanger.fastq,Ecoli,LGC,1,Sanger
 Ecoli-NIST-sanger.fastq,Ecoli,NIST,1,Sanger
-SRR1031053.fastq,Lmono,LGC,1,454
-SRR1031054.fastq,Lmono,LGC,2,454
-SRR1031055.fastq,Lmono,LGC,3,454
+SRR1031054.fastq,Lmono,LGC,1,454
+SRR1031055.fastq,Lmono,LGC,2,454
+SRR1031056.fastq,Lmono,LGC,3,454
 SRR1021212-LM.fastq,Lmono,NMIA,1,454
 SRR1022526.fastq,Lmono,NIST,1,ION
 SRR1022527.fastq,Lmono,NIMC,1,ION
